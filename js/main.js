@@ -176,7 +176,7 @@ function initCatalogue() {
 ───────────────────────────────────────── */
 function initForm() {
   // Inline validation on blur for required fields
-  ['fullName', 'businessName', 'email', 'message'].forEach(id => {
+  ['fullName', 'businessName', 'email', 'quantity'].forEach(id => {
     const field = document.getElementById(id);
     if (!field) return;
     field.addEventListener('blur',  () => validateField(field));
@@ -190,7 +190,7 @@ function validateForm() {
     document.getElementById('fullName'),
     document.getElementById('businessName'),
     document.getElementById('email'),
-    document.getElementById('message'),
+    document.getElementById('quantity'),
   ];
   let allValid = true;
   requiredFields.forEach(field => {
