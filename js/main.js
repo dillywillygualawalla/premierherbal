@@ -329,6 +329,119 @@ const PRICE_DATA = [
   { name: 'Zizyphus Seed',                price: 'Price on request' },
 ];
 
+/* ─────────────────────────────────────────
+   Product Price Lookup — card display
+   Keys are lowercase product titles.
+   Values are formatted for display.
+───────────────────────────────────────── */
+const PRODUCT_PRICES = {
+  'acacia catechu':               '$18.50 / lb',
+  'ashwagandha':                  '$27.00 / lb',
+  'astragalus root':              '$23.00 / lb',
+  'balm of gilead buds':          '$42.00 / lb',
+  'bayberry bark':                '$78.00 / lb',
+  'bilberry':                     '$45.00 / lb',
+  'blessed thistle':              '$22.00 / lb',
+  'blessed thistle herb powder':  '$22.00 / lb',
+  'burdock leaves':               '$18.00 / lb',
+  'butterfly pea flower':         '$27.00 / lb',
+  'banaba leaves':                '$14.00 / lb',
+  'caraway seed':                 '$9.00 / lb',
+  'cardamom green':               '$42.00 / lb',
+  'cats claw bark':               '$23.50 / lb',
+  'cherry stems':                 '$18.50 / lb',
+  'chickweed herb':               '$30.00 / lb',
+  'chicory root roasted':         '$16.00 / lb',
+  'chicory root powder roasted':  '$16.00 / lb',
+  'chondroitin sulphate':         '$34.00 / lb',
+  'cinnamon sticks':              '$18.00 / lb',
+  'cornsilk':                     '$18.50 / lb',
+  'cornflower whole red':         '$62.00 / lb',
+  'crampbark':                    '$19.50 / lb',
+  'cranberries':                  '$39.50 / lb',
+  'dandelion leaves':             '$20.00 / lb',
+  'dead sea mineral salt':        '$14.00 / lb',
+  'dill seed':                    '$10.00 / lb',
+  'dill seed powder':             '$10.00 / lb',
+  'dulse':                        '$53.00 / lb',
+  'emulsifying wax':              '$32.00 / lb',
+  'evening primrose':             '$27.00 / lb',
+  'false unicorn':                '$350.00 / lb',
+  'flax seed':                    '$6.50 / lb',
+  'frankincense tears':           '$26.99 / lb',
+  'goksura puncture vine':        '$15.00 / lb',
+  'goksura large whole':          '$17.00 / lb',
+  'goksura large powder':         '$15.00 / lb',
+  'grape seed powder':            '$18.50 / lb',
+  'green tea matcha':             '$34.00 / lb',
+  'guava leaves powder':          '$16.00 / lb',
+  'honeysuckle flower':           '$48.00 / lb',
+  'horseradish root':             '$24.00 / lb',
+  'horsetail':                    '$20.00 / lb',
+  'kava kava root':               '$112.00 / lb',
+  'kalmeg':                       '$16.00 / lb',
+  'laminaria powder':             '$18.00 / lb',
+  'lavender flower super blue':   '$25.00 / lb',
+  'lavender flower powder':       '$23.50 / lb',
+  'lions mane powder':            '$26.00 / lb',
+  'lions mane whole':             '$30.00 / lb',
+  'lotus petals':                 '$21.50 / lb',
+  'luobuma herb':                 '$22.00 / lb',
+  'magnolia bark':                '$24.50 / lb',
+  'magnesium oxide':              '$16.00 / lb',
+  'moringa seeds':                '$17.00 / lb',
+  'moringa seeds whole':          '$17.00 / lb',
+  'motherwort':                   '$19.50 / lb',
+  'mullein flower':               '$25.50 / lb',
+  'mullein flower whole':         '$25.50 / lb',
+  'niacin powder':                '$23.00 / lb',
+  'olive leaves':                 '$14.00 / lb',
+  'oregano leaves':               '$14.00 / lb',
+  'oregano leaves powder':        '$14.00 / lb',
+  'patchouli leaves':             '$18.00 / lb',
+  'patchouli leaves powder':      '$18.00 / lb',
+  'pau darco bark':               '$22.00 / lb',
+  'penny royal':                  '$17.00 / lb',
+  'pine needles':                 '$27.00 / lb',
+  'pine bark extract 95%':        '$55.50 / lb',
+  'plantain leaves':              '$18.00 / lb',
+  'poplar buds':                  '$42.00 / lb',
+  'psyllium husk':                '$11.50 / lb',
+  'raspberry leaves':             '$18.00 / lb',
+  'red clover blossoms':          '$24.00 / lb',
+  'rehmannia root':               '$22.00 / lb',
+  'reishi mushroom extract':      '$29.00 / lb',
+  'reishi mushroom extract 4:1':  '$29.00 / lb',
+  'ritha':                        '$13.00 / lb',
+  'rosehips seedless':            '$26.00 / lb',
+  'saffron spanish':              '$8.50 / g',
+  'saffron spanish 1g':           '$8.50 / g',
+  'sandalwood red':               '$22.00 / lb',
+  'sarsaparilla root':            '$21.00 / lb',
+  'sassafras root':               '$32.00 / lb',
+  'sassafras leaf powder':        '$32.00 / lb',
+  'saw palmetto berry':           '$43.00 / lb',
+  'sea buckthorn berries':        '$31.00 / lb',
+  'sea buckthorn leaves':         '$24.50 / lb',
+  'semul musla root':             '$18.50 / lb',
+  'senega snake root powder':     '$19.00 / lb',
+  'shilajit powder':              '$36.50 / lb',
+  'solomon seal root':            '$82.00 / lb',
+  'stone root powder':            '$39.50 / lb',
+  'sumac berry':                  '$17.00 / lb',
+  'sunflower petals':             '$26.50 / lb',
+  'tansy flower':                 '$24.50 / lb',
+  'tansy herb':                   '$15.00 / lb',
+  'tongkat ali extract':          '$37.00 / lb',
+  'tongkat ali extract 10:1':     '$37.00 / lb',
+  'turmeric root cs':             '$10.00 / lb',
+  'turmeric root extract':        '$32.00 / lb',
+  'turkey tail':                  '$26.00 / lb',
+  'wild lettuce herb':            '$32.00 / lb',
+  'wild lettuce herb powder':     '$32.00 / lb',
+  'yerba santa':                  '$39.50 / lb',
+};
+
 document.addEventListener('DOMContentLoaded', () => {
   initNav();
   initCatalogue();
@@ -446,10 +559,17 @@ function initCatalogue() {
       .map(u => `<span class="product-tag">${escapeHTML(u)}</span>`)
       .join('');
 
+    const priceKey  = product.title.toLowerCase().trim();
+    const priceVal  = PRODUCT_PRICES[priceKey];
+    const priceHTML = priceVal
+      ? `<span class="product-card__price">${escapeHTML(priceVal)}</span>`
+      : `<span class="product-card__price product-card__price--muted">Price on request</span>`;
+
     return `
       <article class="product-card" aria-label="${escapeHTML(product.title)}">
         <span class="product-card__badge">${escapeHTML(product.form)}</span>
         <h3 class="product-card__name">${escapeHTML(product.title)}</h3>
+        ${priceHTML}
         <div class="product-card__tags">${tags}</div>
         <a href="#contact" class="product-card__inquire">Inquire</a>
       </article>
