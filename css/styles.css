@@ -966,6 +966,71 @@ button { cursor: pointer; font-family: inherit; }
   .hero__heading { font-size: 3.75rem; }
 }
 
+/* ── Product Autocomplete ───────────────────────────────────── */
+.autocomplete-wrap {
+  position: relative;
+}
+
+.autocomplete-dropdown {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 200;
+  background: var(--off-white);
+  border: 1.5px solid rgba(107, 63, 31, 0.25);
+  border-top: none;
+  border-radius: 0 0 6px 6px;
+  box-shadow: 0 6px 18px rgba(45, 74, 45, 0.1);
+  max-height: 230px;
+  overflow-y: auto;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.autocomplete-dropdown.ac-open { display: block; }
+
+.ac-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.6rem 1rem;
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  color: var(--brown-dark);
+  border-bottom: 1px solid rgba(107, 63, 31, 0.07);
+  transition: background var(--trans-fast);
+}
+.ac-item:last-child { border-bottom: none; }
+.ac-item:hover,
+.ac-item:focus {
+  background: rgba(201, 168, 76, 0.12);
+  outline: none;
+}
+
+.ac-name {
+  font-weight: 700;
+  color: var(--green);
+}
+
+.ac-price {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--brown);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.ac-price--muted {
+  color: rgba(107, 63, 31, 0.42);
+  font-weight: 400;
+  font-style: italic;
+}
+
 /* MOQ notice */
 .form-moq-notice {
   font-size: 0.9rem;
