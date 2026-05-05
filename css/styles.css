@@ -542,11 +542,12 @@ button { cursor: pointer; font-family: inherit; }
   background: var(--off-white);
   border: 1px solid rgba(107, 63, 31, 0.12);
   border-radius: 8px;
-  padding: 1.35rem 1.35rem 1.1rem;
+  overflow: hidden;
+  padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 0.6rem;
-  min-height: 155px;
+  gap: 0;
+  min-height: 300px;
   transition: transform var(--trans-normal), box-shadow var(--trans-normal);
   animation: cardEnter 0.4s ease both;
 }
@@ -555,19 +556,60 @@ button { cursor: pointer; font-family: inherit; }
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08), 0 8px 28px rgba(45, 74, 45, 0.10);
 }
 
+/* Image area */
+.product-card__img-wrap {
+  position: relative;
+  height: 180px;
+  flex-shrink: 0;
+  background: var(--cream);
+}
+
+.product-card__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.product-card__placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--cream);
+  font-family: var(--font-heading);
+  font-size: 3.5rem;
+  font-weight: 700;
+  color: rgba(107, 63, 31, 0.20);
+  user-select: none;
+}
+
+/* Badge — overlaid top-left on the image */
 .product-card__badge {
-  display: inline-block;
+  position: absolute;
+  top: 0.55rem;
+  left: 0.55rem;
   padding: 0.15rem 0.5rem;
-  background: rgba(201, 168, 76, 0.10);
-  border: 1px solid rgba(201, 168, 76, 0.30);
+  background: rgba(255, 255, 255, 0.82);
+  border: 1px solid rgba(201, 168, 76, 0.35);
   border-radius: 50px;
   font-size: 0.63rem;
-  font-weight: 600;
-  letter-spacing: 0.06em;
+  font-weight: 700;
+  letter-spacing: 0.07em;
   text-transform: uppercase;
   color: var(--brown);
-  opacity: 0.80;
-  align-self: flex-start;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+/* Card body — padded content below the image */
+.product-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding: 1.1rem 1.25rem 1rem;
+  flex: 1;
 }
 
 .product-card__name-row {

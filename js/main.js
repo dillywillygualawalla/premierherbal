@@ -741,6 +741,208 @@ function initNav() {
 }
 
 /* ─────────────────────────────────────────
+   Product Image Map
+───────────────────────────────────────── */
+const PRODUCT_IMAGES = {
+  'acacia catechu':               'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/Acacia_catechu_flowers.jpg/640px-Acacia_catechu_flowers.jpg',
+  'acai berry':                   'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/A%C3%A7a%C3%AD_na_Ver_o_Peso.jpg/640px-A%C3%A7a%C3%AD_na_Ver_o_Peso.jpg',
+  'activated charcoal':           'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Activated_Carbon.jpg/640px-Activated_Carbon.jpg',
+  'agrimony herb':                'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Agrimonia_eupatoria_%28Gewone_agrimonie%29_2.jpg/640px-Agrimonia_eupatoria_%28Gewone_agrimonie%29_2.jpg',
+  'aloe vera':                    'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Aloe_vera_flower_inset.png/640px-Aloe_vera_flower_inset.png',
+  'angelica root':                'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Angelica_archangelica_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-013.jpg/640px-Angelica_archangelica_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-013.jpg',
+  'anise seed':                   'https://upload.wikimedia.org/wikipedia/commons/thumb/e/ed/Pimpinella_anisum_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-107.jpg/640px-Pimpinella_anisum_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-107.jpg',
+  'anise star':                   'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Star_anise.jpg/640px-Star_anise.jpg',
+  'arnica flower':                'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/Arnica_montana_LC0082.jpg/640px-Arnica_montana_LC0082.jpg',
+  'artichoke leaves':             'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Artichoke_-_Cynara_scolymus_from_The_Grammar_of_Ornament.jpg/640px-Artichoke_-_Cynara_scolymus_from_The_Grammar_of_Ornament.jpg',
+  'ashwagandha':                  'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Ashwagandha_Withania_somnifera_roots_and_leaves.jpg/640px-Ashwagandha_Withania_somnifera_roots_and_leaves.jpg',
+  'barley grass':                 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Barley_field.jpg/640px-Barley_field.jpg',
+  'basil leaves':                 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Basilico_fresco.jpg/640px-Basilico_fresco.jpg',
+  'bay leaves':                   'https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/Bay_leaves_on_white.jpg/640px-Bay_leaves_on_white.jpg',
+  'bee pollen':                   'https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Bee_pollen_in_a_bowl.jpg/640px-Bee_pollen_in_a_bowl.jpg',
+  'beet root':                    'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Beetroot_Beta_vulgaris.jpg/640px-Beetroot_Beta_vulgaris.jpg',
+  'bilberry':                     'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Blueberries_%28Vaccinium_myrtillus%29.jpg/640px-Blueberries_%28Vaccinium_myrtillus%29.jpg',
+  'birch bark':                   'https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Birch_bark_Lamprecht.jpg/640px-Birch_bark_Lamprecht.jpg',
+  'bitter melon':                 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Bittermelon.jpg/640px-Bittermelon.jpg',
+  'black pepper':                 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Piper_nigrum_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-107.jpg/640px-Piper_nigrum_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-107.jpg',
+  'black seed':                   'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Nigella_sativa_seeds.jpg/640px-Nigella_sativa_seeds.jpg',
+  'black tea':                    'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Long_jing_tea_leaves_2.jpg/640px-Long_jing_tea_leaves_2.jpg',
+  'black walnut':                 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Juglans_nigra_nuts.jpg/640px-Juglans_nigra_nuts.jpg',
+  'black walnut hull':            'https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Juglans_nigra_nuts.jpg/640px-Juglans_nigra_nuts.jpg',
+  'bladderwrack':                 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/52/Fucus_vesiculosus_Luc_Viatour.jpg/640px-Fucus_vesiculosus_Luc_Viatour.jpg',
+  'blessed thistle':              'https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Cnicus_benedictus0.jpg/640px-Cnicus_benedictus0.jpg',
+  'borage herb':                  'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Borage_flowers.jpg/640px-Borage_flowers.jpg',
+  'burdock root':                 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Arctium_lappa.jpg/640px-Arctium_lappa.jpg',
+  'burdock leaves':               'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Arctium_lappa.jpg/640px-Arctium_lappa.jpg',
+  'calendula marigold flower':    'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Calendula_officinalis.jpg/640px-Calendula_officinalis.jpg',
+  'calendula flower':             'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Calendula_officinalis.jpg/640px-Calendula_officinalis.jpg',
+  'calendula petals':             'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Calendula_officinalis.jpg/640px-Calendula_officinalis.jpg',
+  'caraway seed':                 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Carum_carvi.jpg/640px-Carum_carvi.jpg',
+  'cardamom green':               'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Cardamom_Pods.jpg/640px-Cardamom_Pods.jpg',
+  'cardamom seed':                'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Cardamom_Pods.jpg/640px-Cardamom_Pods.jpg',
+  'cats claw bark':               'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Uncaria_tomentosa.jpg/640px-Uncaria_tomentosa.jpg',
+  'catnip herb':                  'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Nepeta_cataria.jpg/640px-Nepeta_cataria.jpg',
+  'cayenne pepper':               'https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/Cayenne_peppers_-_whole_and_open.jpg/640px-Cayenne_peppers_-_whole_and_open.jpg',
+  'celery seed':                  'https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Celery_seeds.jpg/640px-Celery_seeds.jpg',
+  'chaga mushroom':               'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Inonotus_obliquus_-_birch_fungus.jpg/640px-Inonotus_obliquus_-_birch_fungus.jpg',
+  'chamomile':                    'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/Chamomile%40original_size.jpg/640px-Chamomile%40original_size.jpg',
+  'chamomile flower':             'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/Chamomile%40original_size.jpg/640px-Chamomile%40original_size.jpg',
+  'chia seed':                    'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Chia_seeds.jpg/640px-Chia_seeds.jpg',
+  'cinnamon':                     'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Cinnamon-other.jpg/640px-Cinnamon-other.jpg',
+  'cinnamon sticks':              'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Cinnamon-other.jpg/640px-Cinnamon-other.jpg',
+  'cloves':                       'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f8/Cloves.jpg/640px-Cloves.jpg',
+  'comfrey leaves':               'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Symphytum_officinale_%28illustration%29.jpg/640px-Symphytum_officinale_%28illustration%29.jpg',
+  'comfrey root':                 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Symphytum_officinale_%28illustration%29.jpg/640px-Symphytum_officinale_%28illustration%29.jpg',
+  'coriander seed':               'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/Coriander_seeds.jpg/640px-Coriander_seeds.jpg',
+  'cranberries':                  'https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/CranberryWool.jpg/640px-CranberryWool.jpg',
+  'cumin seed':                   'https://upload.wikimedia.org/wikipedia/commons/thumb/8/86/Cumin_seeds.jpg/640px-Cumin_seeds.jpg',
+  'damiana leaves':               'https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Turnera_diffusa_flowers.jpg/640px-Turnera_diffusa_flowers.jpg',
+  'dandelion leaves':             'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Dandelion_Flowers.jpg/640px-Dandelion_Flowers.jpg',
+  'dandelion root':               'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Dandelion_Flowers.jpg/640px-Dandelion_Flowers.jpg',
+  'devils claw root':             'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Harpagophytum_procumbens01.jpg/640px-Harpagophytum_procumbens01.jpg',
+  'dill seed':                    'https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/Anethum_graveolens.jpg/640px-Anethum_graveolens.jpg',
+  'dong quai root':               'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/Angelica_sinensis.jpg/640px-Angelica_sinensis.jpg',
+  'dulse':                        'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8b/Dulse_seaweed.jpg/640px-Dulse_seaweed.jpg',
+  'echinacea angustifolia herb':  'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Echinacea_purpurea_-_Igelkottenstråle.jpg/640px-Echinacea_purpurea_-_Igelkottenstråle.jpg',
+  'echinacea angustifolia root':  'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Echinacea_purpurea_-_Igelkottenstråle.jpg/640px-Echinacea_purpurea_-_Igelkottenstråle.jpg',
+  'echinacea purpurea herb':      'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Echinacea_purpurea_-_Igelkottenstråle.jpg/640px-Echinacea_purpurea_-_Igelkottenstråle.jpg',
+  'echinacea purpurea root':      'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Echinacea_purpurea_-_Igelkottenstråle.jpg/640px-Echinacea_purpurea_-_Igelkottenstråle.jpg',
+  'elder berry':                  'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/Elderberries_%28Sambucus_nigra%29.jpg/640px-Elderberries_%28Sambucus_nigra%29.jpg',
+  'elder flower':                 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Sambucus_nigra_flowers.jpg/640px-Sambucus_nigra_flowers.jpg',
+  'eucalyptus leaves':            'https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Eucalyptus_leaves.jpg/640px-Eucalyptus_leaves.jpg',
+  'evening primrose':             'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Oenothera_biennis_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-101.jpg/640px-Oenothera_biennis_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-101.jpg',
+  'eyebright herb':               'https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Euphrasia_officinalis.jpg/640px-Euphrasia_officinalis.jpg',
+  'fennel seed':                  'https://upload.wikimedia.org/wikipedia/commons/thumb/3/37/Fennel_seeds.jpg/640px-Fennel_seeds.jpg',
+  'fenugreek seed':               'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Fenugreek_seeds.jpg/640px-Fenugreek_seeds.jpg',
+  'feverfew herb':                'https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Tanacetum_parthenium.jpg/640px-Tanacetum_parthenium.jpg',
+  'flax seed':                    'https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Flax_seeds.jpg/640px-Flax_seeds.jpg',
+  'frankincense tears':           'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2d/Frankincense_%28Boswellia_sacra%29_tears.jpg/640px-Frankincense_%28Boswellia_sacra%29_tears.jpg',
+  'garlic':                       'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Garlic-_Allium_sativum.jpg/640px-Garlic-_Allium_sativum.jpg',
+  'gentian root':                 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/Gentiana_lutea_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-072.jpg/640px-Gentiana_lutea_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-072.jpg',
+  'ginger root':                  'https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Ginger_roots.jpg/640px-Ginger_roots.jpg',
+  'ginkgo leaves':                'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Ginkgo_biloba_at_Old_Westbury_Gardens.jpg/640px-Ginkgo_biloba_at_Old_Westbury_Gardens.jpg',
+  'ginseng korean root':          'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/Panax_ginseng_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-105.jpg/640px-Panax_ginseng_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-105.jpg',
+  'ginseng panax root':           'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/Panax_ginseng_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-105.jpg/640px-Panax_ginseng_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-105.jpg',
+  'ginseng siberian root':        'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/Panax_ginseng_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-105.jpg/640px-Panax_ginseng_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-105.jpg',
+  'goji berry':                   'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Goji_Berries.jpg/640px-Goji_Berries.jpg',
+  'golden rod herb':              'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Solidago_virgaurea1.jpg/640px-Solidago_virgaurea1.jpg',
+  'goldenseal root':              'https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Hydrastis_canadensis.jpg/640px-Hydrastis_canadensis.jpg',
+  'goldenseal leaves':            'https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Hydrastis_canadensis.jpg/640px-Hydrastis_canadensis.jpg',
+  'gotu kola leaves':             'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Centella_asiatica.jpg/640px-Centella_asiatica.jpg',
+  'grape seed':                   'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Grape_seeds.jpg/640px-Grape_seeds.jpg',
+  'grape seed extract':           'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Grape_seeds.jpg/640px-Grape_seeds.jpg',
+  'green tea':                    'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Long_jing_tea_leaves_2.jpg/640px-Long_jing_tea_leaves_2.jpg',
+  'guarana seed':                 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Guarana_seeds.jpg/640px-Guarana_seeds.jpg',
+  'gymnema leaves':               'https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Gymnema_sylvestre.jpg/640px-Gymnema_sylvestre.jpg',
+  'hawthorne berries':            'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Hawthorn_berries.jpg/640px-Hawthorn_berries.jpg',
+  'hemp seed':                    'https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/Hemp_seeds.jpg/640px-Hemp_seeds.jpg',
+  'hibiscus':                     'https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Hibiscus_sabdariffa_-_dried_flowers.jpg/640px-Hibiscus_sabdariffa_-_dried_flowers.jpg',
+  'honeysuckle flower':           'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Lonicera_japonica.jpg/640px-Lonicera_japonica.jpg',
+  'hops flower':                  'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/HopCones.jpg/640px-HopCones.jpg',
+  'hops':                         'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/HopCones.jpg/640px-HopCones.jpg',
+  'horehound herb':               'https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Marrubium_vulgare2.jpg/640px-Marrubium_vulgare2.jpg',
+  'horse chestnut':               'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/AescHippSeeds.jpg/640px-AescHippSeeds.jpg',
+  'horsetail':                    'https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/Equisetum_arvense.jpg/640px-Equisetum_arvense.jpg',
+  'irish moss':                   'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Chondrus_crispus_Helgoland.jpg/640px-Chondrus_crispus_Helgoland.jpg',
+  'jasmine flower':               'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/Jasminum_officinale.jpg/640px-Jasminum_officinale.jpg',
+  'jasmine tea':                  'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/Jasminum_officinale.jpg/640px-Jasminum_officinale.jpg',
+  'juniper berries':              'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/Juniperus_communis_berries.jpg/640px-Juniperus_communis_berries.jpg',
+  'kava kava root':               'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Piper_methysticum_01.jpg/640px-Piper_methysticum_01.jpg',
+  'kelp atlantic':                'https://upload.wikimedia.org/wikipedia/commons/thumb/5/52/Fucus_vesiculosus_Luc_Viatour.jpg/640px-Fucus_vesiculosus_Luc_Viatour.jpg',
+  'lavender flower super blue':   'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Lavandula_angustifolia_Hidcote_1.jpg/640px-Lavandula_angustifolia_Hidcote_1.jpg',
+  'lavender flower':              'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Lavandula_angustifolia_Hidcote_1.jpg/640px-Lavandula_angustifolia_Hidcote_1.jpg',
+  'lemon balm':                   'https://upload.wikimedia.org/wikipedia/commons/thumb/b/be/Melissa_officinalis_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-089.jpg/640px-Melissa_officinalis_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-089.jpg',
+  'lemon grass':                  'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Lemongrass_001.jpg/640px-Lemongrass_001.jpg',
+  'lemongrass':                   'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Lemongrass_001.jpg/640px-Lemongrass_001.jpg',
+  'licorice root':                'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Glycyrrhiza_glabra_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-076.jpg/640px-Glycyrrhiza_glabra_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-076.jpg',
+  'licorice root sticks':         'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Glycyrrhiza_glabra_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-076.jpg/640px-Glycyrrhiza_glabra_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-076.jpg',
+  'maca':                         'https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/Maca.jpg/640px-Maca.jpg',
+  'magnolia bark':                'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Magnolia_flower_2.jpg/640px-Magnolia_flower_2.jpg',
+  'marigold flower':              'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Calendula_officinalis.jpg/640px-Calendula_officinalis.jpg',
+  'marjoram':                     'https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Origanum_majorana_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-100.jpg/640px-Origanum_majorana_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-100.jpg',
+  'marshmallow root':             'https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/Althaea_officinalis1.jpg/640px-Althaea_officinalis1.jpg',
+  'marshmallow leaves':           'https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/Althaea_officinalis1.jpg/640px-Althaea_officinalis1.jpg',
+  'milk thistle herb':            'https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/Silybum_marianum_Mk.jpg/640px-Silybum_marianum_Mk.jpg',
+  'milk thistle seed':            'https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/Silybum_marianum_Mk.jpg/640px-Silybum_marianum_Mk.jpg',
+  'mistletoe':                    'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/Mistletoe.jpg/640px-Mistletoe.jpg',
+  'motherwort':                   'https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Leonurus_cardiaca.jpg/640px-Leonurus_cardiaca.jpg',
+  'mugwort':                      'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Artemisia_vulgaris.jpg/640px-Artemisia_vulgaris.jpg',
+  'mullein flower':               'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Verbascum_thapsus.jpg/640px-Verbascum_thapsus.jpg',
+  'mullein':                      'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Verbascum_thapsus.jpg/640px-Verbascum_thapsus.jpg',
+  'mushrooms shiitake':           'https://upload.wikimedia.org/wikipedia/commons/thumb/4/40/Shiitake_mushrooms.jpg/640px-Shiitake_mushrooms.jpg',
+  'mustard seed':                 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Mustard_seeds_-_Brassica_hirta.jpg/640px-Mustard_seeds_-_Brassica_hirta.jpg',
+  'myrrh gum':                    'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8b/Myrrh_-_gum.jpg/640px-Myrrh_-_gum.jpg',
+  'neem leaves':                  'https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/Azadirachta_indica_%28Neem%29_in_Hyderabad_W2_IMG_6976.jpg/640px-Azadirachta_indica_%28Neem%29_in_Hyderabad_W2_IMG_6976.jpg',
+  'nettle leaves':                'https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Brennnessel.jpg/640px-Brennnessel.jpg',
+  'nettle root':                  'https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Brennnessel.jpg/640px-Brennnessel.jpg',
+  'nutmeg':                       'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/Nutmeg_2.jpg/640px-Nutmeg_2.jpg',
+  'olive leaves':                 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Olive_leaf_%28Olea_europaea%29.jpg/640px-Olive_leaf_%28Olea_europaea%29.jpg',
+  'oolong tea':                   'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Long_jing_tea_leaves_2.jpg/640px-Long_jing_tea_leaves_2.jpg',
+  'orange peel':                  'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Orange-Fruit-Pieces.jpg/640px-Orange-Fruit-Pieces.jpg',
+  'oregano leaves':               'https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/Origanum_vulgare_-_harilik_pune%C3%BCrt.jpg/640px-Origanum_vulgare_-_harilik_pune%C3%BCrt.jpg',
+  'papaya leaves':                'https://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Carica_papaya_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-180.jpg/640px-Carica_papaya_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-180.jpg',
+  'paprika spanish':              'https://upload.wikimedia.org/wikipedia/commons/thumb/3/37/Paprika_powder.jpg/640px-Paprika_powder.jpg',
+  'parsley':                      'https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Petroselinum_crispum.jpg/640px-Petroselinum_crispum.jpg',
+  'parsley root':                 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Petroselinum_crispum.jpg/640px-Petroselinum_crispum.jpg',
+  'parsley seed':                 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Petroselinum_crispum.jpg/640px-Petroselinum_crispum.jpg',
+  'passion flower':               'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Passiflora_caerulea_-_Passionsblume.jpg/640px-Passiflora_caerulea_-_Passionsblume.jpg',
+  'patchouli leaves':             'https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Pogostemon_cablin.jpg/640px-Pogostemon_cablin.jpg',
+  'pau darco bark':               'https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/Handroanthus_impetiginosus.jpg/640px-Handroanthus_impetiginosus.jpg',
+  'peppermint leaves':            'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8b/Mentha_x_piperita_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-096.jpg/640px-Mentha_x_piperita_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-096.jpg',
+  'peppermint':                   'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8b/Mentha_x_piperita_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-096.jpg/640px-Mentha_x_piperita_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-096.jpg',
+  'plantain':                     'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/Plantago_major_leaves.jpg/640px-Plantago_major_leaves.jpg',
+  'psyllium husk':                'https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Psyllium_husks.jpg/640px-Psyllium_husks.jpg',
+  'psyllium seed':                'https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Psyllium_husks.jpg/640px-Psyllium_husks.jpg',
+  'pumpkin seed':                 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Pumpkin_seeds.jpg/640px-Pumpkin_seeds.jpg',
+  'raspberry leaves':             'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Raspberry_Leaves.jpg/640px-Raspberry_Leaves.jpg',
+  'red clover tops':              'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/Trifolium_pratense_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-141.jpg/640px-Trifolium_pratense_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-141.jpg',
+  'red rose buds petals':         'https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Simple_red_rose.jpg/640px-Simple_red_rose.jpg',
+  'red rose buds & petals':       'https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Simple_red_rose.jpg/640px-Simple_red_rose.jpg',
+  'rhodiola':                     'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e2/Rhodiola_rosea.jpg/640px-Rhodiola_rosea.jpg',
+  'rosehips':                     'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/Rose_hip_-_Rosa_canina.jpg/640px-Rose_hip_-_Rosa_canina.jpg',
+  'rosemary leaves':              'https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Rosemary_in_bloom.jpg/640px-Rosemary_in_bloom.jpg',
+  'saffron':                      'https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Saffron_filaments.jpg/640px-Saffron_filaments.jpg',
+  'sage leaves':                  'https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Salvia_officinalis1.jpg/640px-Salvia_officinalis1.jpg',
+  'sage clary':                   'https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Salvia_officinalis1.jpg/640px-Salvia_officinalis1.jpg',
+  'sandalwood red chips':         'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Santalum_album_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-259.jpg/640px-Santalum_album_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-259.jpg',
+  'saw palmetto berry':           'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Saw_Palmetto_%28Serenoa_repens%29.jpg/640px-Saw_Palmetto_%28Serenoa_repens%29.jpg',
+  'sea buckthorn':                'https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Hippoph%C3%A4e_rhamnoides.jpg/640px-Hippoph%C3%A4e_rhamnoides.jpg',
+  'senna leaves':                 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/Cassia_senna_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-037.jpg/640px-Cassia_senna_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-037.jpg',
+  'senna pods':                   'https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/Cassia_senna_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-037.jpg/640px-Cassia_senna_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-037.jpg',
+  'shilajit powder':              'https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/Shilajit.jpg/640px-Shilajit.jpg',
+  'slippery elm bark':            'https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/Ulmus_rubra.jpg/640px-Ulmus_rubra.jpg',
+  'spearmint leaves':             'https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/Minze.jpg/640px-Minze.jpg',
+  'spearmint':                    'https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/Minze.jpg/640px-Minze.jpg',
+  'spirulina':                    'https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Spirulina_Tablets.jpg/640px-Spirulina_Tablets.jpg',
+  'st johns wort':                'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Hypericum_perforatum_-_Echtes_Johanniskraut_-_Common_St._John%27s_Wort_-_Perforate_St_John%27s-wort.jpg/640px-Hypericum_perforatum_-_Echtes_Johanniskraut_-_Common_St._John%27s_Wort_-_Perforate_St_John%27s-wort.jpg',
+  "st john's wort":               'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Hypericum_perforatum_-_Echtes_Johanniskraut_-_Common_St._John%27s_Wort_-_Perforate_St_John%27s-wort.jpg/640px-Hypericum_perforatum_-_Echtes_Johanniskraut_-_Common_St._John%27s_Wort_-_Perforate_St_John%27s-wort.jpg',
+  'stevia leaves':                'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Stevia_rebaudiana.jpg/640px-Stevia_rebaudiana.jpg',
+  'sumac berry':                  'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Sumac_in_bowl.jpg/640px-Sumac_in_bowl.jpg',
+  'tansy':                        'https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/Tanacetum_vulgare_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-135.jpg/640px-Tanacetum_vulgare_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-135.jpg',
+  'tarragon':                     'https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Tarragon.jpg/640px-Tarragon.jpg',
+  'thyme leaves':                 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Thymus_vulgaris_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-138.jpg/640px-Thymus_vulgaris_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-138.jpg',
+  'thyme':                        'https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Thymus_vulgaris_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-138.jpg/640px-Thymus_vulgaris_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-138.jpg',
+  'triphala powder':              'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/Ashwagandha_Withania_somnifera_roots_and_leaves.jpg/640px-Ashwagandha_Withania_somnifera_roots_and_leaves.jpg',
+  'tulsi leaves':                 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Ocimum_tenuiflorum3.jpg/640px-Ocimum_tenuiflorum3.jpg',
+  'turmeric':                     'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Turmeric_rhizomes_and_powder.jpg/640px-Turmeric_rhizomes_and_powder.jpg',
+  'uva ursi leaves':              'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Arctostaphylos_uva-ursi_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-019.jpg/640px-Arctostaphylos_uva-ursi_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-019.jpg',
+  'valerian root':                'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Valeriana_officinalis_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-146.jpg/640px-Valeriana_officinalis_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-146.jpg',
+  'watercress':                   'https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Watercress.jpg/640px-Watercress.jpg',
+  'wheat grass':                  'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Wheatgrass.jpg/640px-Wheatgrass.jpg',
+  'wheatgrass':                   'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Wheatgrass.jpg/640px-Wheatgrass.jpg',
+  'white sage leaves':            'https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Salvia_officinalis1.jpg/640px-Salvia_officinalis1.jpg',
+  'white willow bark':            'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Salix_alba.jpg/640px-Salix_alba.jpg',
+  'wild cherry bark':             'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Prunus_serotina.jpg/640px-Prunus_serotina.jpg',
+  'wild yam root':                'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Dioscorea_villosa.jpg/640px-Dioscorea_villosa.jpg',
+  'witch hazel leaves':           'https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Hamamelis_virginiana.jpg/640px-Hamamelis_virginiana.jpg',
+  'wormwood':                     'https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Artemisia_absinthium_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-018.jpg/640px-Artemisia_absinthium_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-018.jpg',
+  'yarrow flower':                'https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Achillea_millefolium_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-004.jpg/640px-Achillea_millefolium_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-004.jpg',
+  'yellow dock root':             'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Rumex_crispus_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-120.jpg/640px-Rumex_crispus_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-120.jpg',
+  'yerba mate green':             'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Yerba_mate_dry_leaves.jpg/640px-Yerba_mate_dry_leaves.jpg',
+  'yerba mate':                   'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Yerba_mate_dry_leaves.jpg/640px-Yerba_mate_dry_leaves.jpg',
+  'yohimbe bark':                 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/Pausinystalia_johimbe.jpg/640px-Pausinystalia_johimbe.jpg',
+};
+
+/* ─────────────────────────────────────────
    Catalogue — filter, search, load more
 ───────────────────────────────────────── */
 function initCatalogue() {
@@ -800,15 +1002,28 @@ function initCatalogue() {
       ? `<span class="product-card__price">${escapeHTML(priceVal)}</span>`
       : `<span class="product-card__price product-card__price--muted">Price on request</span>`;
 
+    const imgUrl  = PRODUCT_IMAGES[priceKey];
+    const initial = escapeHTML(product.title.charAt(0).toUpperCase());
+    const imgHTML = imgUrl
+      ? `<img class="product-card__img" src="${escapeHTML(imgUrl)}" alt="${escapeHTML(product.title)}" loading="lazy"
+             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+         <div class="product-card__placeholder" style="display:none" aria-hidden="true">${initial}</div>`
+      : `<div class="product-card__placeholder" aria-hidden="true">${initial}</div>`;
+
     return `
       <article class="product-card" aria-label="${escapeHTML(product.title)}">
-        <span class="product-card__badge">${formLabel}</span>
-        <div class="product-card__name-row">
-          <h3 class="product-card__name">${escapeHTML(product.title)}</h3>
-          ${priceHTML}
+        <div class="product-card__img-wrap">
+          ${imgHTML}
+          <span class="product-card__badge">${formLabel}</span>
         </div>
-        <hr class="product-card__divider">
-        <a href="#contact" class="product-card__inquire">Inquire</a>
+        <div class="product-card__body">
+          <div class="product-card__name-row">
+            <h3 class="product-card__name">${escapeHTML(product.title)}</h3>
+            ${priceHTML}
+          </div>
+          <hr class="product-card__divider">
+          <a href="#contact" class="product-card__inquire">Inquire</a>
+        </div>
       </article>
     `;
   }
