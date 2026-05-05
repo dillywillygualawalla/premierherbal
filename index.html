@@ -56,13 +56,13 @@
       <!-- Nav Links -->
       <ul class="nav__links" id="navLinks" role="list">
         <li><a href="#home"      class="nav__link">Home</a></li>
-        <li><a href="#about"     class="nav__link">About</a></li>
         <li><a href="#catalogue" class="nav__link">Catalogue</a></li>
         <li class="nav__contact-item">
           <a href="#contact" class="nav__link">Contact</a>
           <a href="https://www.instagram.com/premier.herbal/?hl=en" class="nav__social-link" target="_blank" rel="noopener" aria-label="Follow us on Instagram"><i class="fab fa-instagram"></i></a>
           <a href="https://www.facebook.com/people/Premier-Herbs/pfbid031V3xg2DkF5qvj3xWZi9pTwxSicVViwuQsMPBB21cKzpkFwkEDk4o9qpbKFXFW2pPl/?mibextid=wwXIfr&rdid=ArtRG5AjlveiHrpa&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F1Cf8ViX7qL%2F%3Fmibextid%3DwwXIfr" class="nav__social-link" target="_blank" rel="noopener" aria-label="Follow us on Facebook"><i class="fab fa-facebook-f"></i></a>
         </li>
+        <li><a href="#about" class="nav__link">About</a></li>
       </ul>
 
     </div>
@@ -203,7 +203,7 @@
           <h2 class="section-heading">Our Herbs &amp; Spices Catalogue</h2>
           <p class="catalogue__subheading">
             Over 400 products available in bulk wholesale quantities.
-            Contact us for pricing. <strong>Minimum order: $200 CAD.</strong>
+            <strong>Minimum order: $200 CAD.</strong>
           </p>
         </header>
 
@@ -226,21 +226,9 @@
           />
         </div>
 
-        <!-- Category filter tabs -->
-        <div class="catalogue__filters" role="tablist" aria-label="Filter by category">
-          <button class="filter-btn filter-btn--active" data-filter="all"       role="tab" aria-selected="true">All</button>
-          <button class="filter-btn"                    data-filter="culinary"  role="tab" aria-selected="false">Culinary &amp; Spices</button>
-          <button class="filter-btn"                    data-filter="medicinal" role="tab" aria-selected="false">Medicinal &amp; Supplements</button>
-          <button class="filter-btn"                    data-filter="tea"       role="tab" aria-selected="false">Teas &amp; Adaptogens</button>
-          <button class="filter-btn"                    data-filter="ayurvedic" role="tab" aria-selected="false">Ayurvedic</button>
-          <button class="filter-btn"                    data-filter="skincare"  role="tab" aria-selected="false">Skincare &amp; Topical</button>
-          <button class="filter-btn"                    data-filter="detox"     role="tab" aria-selected="false">Detox &amp; Digestive</button>
-          <button class="filter-btn"                    data-filter="sleep"     role="tab" aria-selected="false">Sleep &amp; Calming</button>
-        </div>
-
-        <!-- Live product count -->
-        <p class="catalogue__count" id="productCount" aria-live="polite" aria-atomic="true">
-          Loading products&hellip;
+        <!-- Format legend -->
+        <p class="catalogue__legend">
+          <em>Format guide: C/S = Cut &amp; Sifted &middot; W = Whole &middot; PWD = Powder</em>
         </p>
 
         <!-- Product grid (populated by JS) -->

@@ -745,42 +745,23 @@ function initNav() {
 ───────────────────────────────────────── */
 function initCatalogue() {
   const grid        = document.getElementById('productGrid');
-  const countEl     = document.getElementById('productCount');
   const searchInput = document.getElementById('catalogueSearch');
   const loadMoreBtn = document.getElementById('loadMoreBtn');
   const loadMoreWrap = document.getElementById('loadMoreWrap');
-  const filterBtns  = document.querySelectorAll('.filter-btn');
 
   const PAGE_SIZE = 48;
-  let currentFilter   = 'all';
   let currentSearch   = '';
   let visibleCount    = PAGE_SIZE;
   let filteredProducts = [];
 
-  // Maps filter tab keys → a predicate function on a product
-  const FILTER_MAP = {
-    all:      () => true,
-    culinary: p => p.uses.some(u => ['Culinary', 'Spice', 'Herb'].includes(u)),
-    medicinal:p => p.uses.some(u => ['Medicinal', 'Supplement'].includes(u)),
-    tea:      p => p.uses.some(u => ['Tea', 'Adaptogen'].includes(u)),
-    ayurvedic:p => p.uses.includes('Ayurvedic'),
-    skincare: p => p.uses.some(u => ['Skincare', 'Topical'].includes(u)),
-    detox:    p => p.uses.some(u => ['Detox', 'Digestive'].includes(u)),
-    sleep:    p => p.uses.some(u => ['Sleep', 'Calming'].includes(u)),
-  };
-
-  /* Apply active filter + search query, then re-render */
+  /* Apply search query, then re-render */
   function applyFilters() {
-    const filterFn = FILTER_MAP[currentFilter] || FILTER_MAP.all;
-    const query    = currentSearch.toLowerCase().trim();
+    const query = currentSearch.toLowerCase().trim();
 
     filteredProducts = ALL_PRODUCTS.filter(p => {
-      const matchesFilter = filterFn(p);
-      const matchesSearch = !query
+      return !query
         || p.title.toLowerCase().includes(query)
-        || p.uses.some(u => u.toLowerCase().includes(query))
         || p.form.toLowerCase().includes(query);
-      return matchesFilter && matchesSearch;
     });
 
     visibleCount = PAGE_SIZE;
@@ -794,10 +775,6 @@ function initCatalogue() {
 
     // Build cards HTML
     grid.innerHTML = slice.map((product, i) => createCardHTML(product, i)).join('');
-
-    // Update counter label
-    countEl.textContent =
-      `Showing ${slice.length} of ${total} product${total !== 1 ? 's' : ''}`;
 
     // Show/hide Load More button
     if (slice.length < total) {
@@ -814,10 +791,6 @@ function initCatalogue() {
 
   /* Generate HTML string for a single product card */
   function createCardHTML(product, index) {
-    const tags = product.uses.slice(0, 2)
-      .map(u => `<span class="product-tag">${escapeHTML(u)}</span>`)
-      .join('');
-
     const priceKey  = product.title.toLowerCase().trim();
     const priceVal  = PRODUCT_PRICES[priceKey];
     const priceHTML = priceVal
@@ -832,25 +805,10 @@ function initCatalogue() {
           ${priceHTML}
         </div>
         <hr class="product-card__divider">
-        <div class="product-card__tags">${tags}</div>
         <a href="#contact" class="product-card__inquire">Inquire</a>
       </article>
     `;
   }
-
-  /* Filter tab clicks */
-  filterBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      filterBtns.forEach(b => {
-        b.classList.remove('filter-btn--active');
-        b.setAttribute('aria-selected', 'false');
-      });
-      btn.classList.add('filter-btn--active');
-      btn.setAttribute('aria-selected', 'true');
-      currentFilter = btn.dataset.filter;
-      applyFilters();
-    });
-  });
 
   /* Live search with 180ms debounce */
   let searchTimer;
