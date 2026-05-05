@@ -789,8 +789,11 @@ function initCatalogue() {
     });
   }
 
+  const FORM_LABELS = { 'Cut Sifted': 'C/S', 'Whole': 'W', 'Powder': 'PWD' };
+
   /* Generate HTML string for a single product card */
   function createCardHTML(product, index) {
+    const formLabel = FORM_LABELS[product.form] || escapeHTML(product.form);
     const priceKey  = product.title.toLowerCase().trim();
     const priceVal  = PRODUCT_PRICES[priceKey];
     const priceHTML = priceVal
@@ -799,7 +802,7 @@ function initCatalogue() {
 
     return `
       <article class="product-card" aria-label="${escapeHTML(product.title)}">
-        <span class="product-card__badge">${escapeHTML(product.form)}</span>
+        <span class="product-card__badge">${formLabel}</span>
         <div class="product-card__name-row">
           <h3 class="product-card__name">${escapeHTML(product.title)}</h3>
           ${priceHTML}
