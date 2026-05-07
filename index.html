@@ -53,6 +53,15 @@
         <span aria-hidden="true"></span>
       </button>
 
+      <!-- Cart button -->
+      <button class="nav__cart-btn" id="cartBtn" aria-label="Open cart">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle>
+          <path d="M1 1h4l2.68 13.39a2 2 0 001.99 1.61h9.72a2 2 0 001.99-1.62L21 5H6"></path>
+        </svg>
+        <span class="nav__cart-badge" id="cartBadge" aria-hidden="true"></span>
+      </button>
+
       <!-- Nav Links -->
       <ul class="nav__links" id="navLinks" role="list">
         <li><a href="#home"      class="nav__link">Home</a></li>
@@ -506,6 +515,44 @@
       </div>
     </div>
   </footer>
+
+  <!-- ╔══════════════════════════════════════════╗
+       ║  CART OVERLAY                            ║
+       ╚══════════════════════════════════════════╝ -->
+  <div class="cart-overlay" id="cartOverlay" aria-hidden="true"></div>
+
+  <!-- ╔══════════════════════════════════════════╗
+       ║  CART DRAWER                             ║
+       ╚══════════════════════════════════════════╝ -->
+  <aside class="cart-drawer" id="cartDrawer" role="dialog" aria-modal="true"
+         aria-label="Wholesale cart" aria-hidden="true">
+
+    <header class="cart-drawer__header">
+      <h2 class="cart-drawer__title">Your Wholesale Cart</h2>
+      <button class="cart-drawer__close" id="cartClose" aria-label="Close cart">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6"  y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </header>
+
+    <div class="cart-drawer__body" id="cartBody"></div>
+    <div class="cart-drawer__footer" id="cartFooter"></div>
+
+  </aside>
+
+  <!-- ╔══════════════════════════════════════════╗
+       ║  CHECKOUT MODAL                          ║
+       ╚══════════════════════════════════════════╝ -->
+  <div class="checkout-modal" id="checkoutModal" role="dialog" aria-modal="true"
+       aria-labelledby="checkoutModalTitle" aria-hidden="true" hidden>
+    <div class="checkout-modal__backdrop" id="checkoutBackdrop"></div>
+    <div class="checkout-modal__panel">
+      <div id="checkoutContent"></div>
+    </div>
+  </div>
 
   <!-- Scripts — products.js must load before main.js -->
   <script src="js/products.js"></script>

@@ -704,6 +704,7 @@ const PRODUCT_PRICES = {
 document.addEventListener('DOMContentLoaded', () => {
   initNav();
   initCatalogue();
+  initCart();
   initForm();
   initScrollAnimations();
   initSmoothScroll();
@@ -1022,7 +1023,11 @@ function initCatalogue() {
             ${priceHTML}
           </div>
           <hr class="product-card__divider">
-          <a href="#contact" class="product-card__inquire">Inquire</a>
+          <button class="product-card__add-btn"
+                  data-name="${escapeHTML(product.title)}"
+                  data-price="${escapeHTML(priceVal || '')}">
+            Add to Cart
+          </button>
         </div>
       </article>
     `;
@@ -1246,4 +1251,510 @@ function escapeHTML(str) {
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;');
+}
+
+/* ─────────────────────────────────────────
+   Cart System
+   Parts: badge, drawer, checkout modal,
+   mailto submission, localStorage persist
+───────────────────────────────────────── */
+function initCart() {
+  const STORAGE_KEY = 'premierherbal_cart';
+  const MIN_ORDER   = 200;
+
+  /* ── State ─────────────────────────── */
+  let cart = loadCart();
+
+  /* ── DOM refs ──────────────────────── */
+  const cartBtn       = document.getElementById('cartBtn');
+  const cartBadge     = document.getElementById('cartBadge');
+  const cartOverlay   = document.getElementById('cartOverlay');
+  const cartDrawer    = document.getElementById('cartDrawer');
+  const cartClose     = document.getElementById('cartClose');
+  const cartBody      = document.getElementById('cartBody');
+  const cartFooter    = document.getElementById('cartFooter');
+  const checkoutModal = document.getElementById('checkoutModal');
+  const checkoutContent = document.getElementById('checkoutContent');
+  const checkoutBackdrop = document.getElementById('checkoutBackdrop');
+  const productGrid   = document.getElementById('productGrid');
+
+  /* ── Persistence ───────────────────── */
+  function loadCart() {
+    try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
+    catch { return []; }
+  }
+  function saveCart() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(cart));
+  }
+  function clearCart() {
+    cart = [];
+    saveCart();
+    updateBadge();
+  }
+
+  /* ── Price helpers ─────────────────── */
+  // Returns { numeric: Number|null, unit: String }
+  function parsePrice(label) {
+    if (!label) return { numeric: null, unit: 'lb' };
+    const m = label.match(/\$([\d.]+)\s*\/\s*(.+)/);
+    if (!m) return { numeric: null, unit: 'lb' };
+    return { numeric: parseFloat(m[1]), unit: m[2].trim() };
+  }
+
+  function getSubtotal() {
+    return cart.reduce((sum, item) => {
+      return sum + (item.numericPrice ? item.numericPrice * item.quantity : 0);
+    }, 0);
+  }
+
+  function getTotalQty() {
+    return cart.reduce((n, item) => n + item.quantity, 0);
+  }
+
+  /* ── Cart CRUD ─────────────────────── */
+  function addItem(name, priceLabel) {
+    const id = name.toLowerCase();
+    const existing = cart.find(i => i.id === id);
+    if (existing) {
+      existing.quantity += 1;
+    } else {
+      const { numeric, unit } = parsePrice(priceLabel);
+      cart.push({
+        id,
+        name,
+        priceLabel: priceLabel || null,
+        numericPrice: numeric,
+        unit,
+        quantity: 1
+      });
+    }
+    saveCart();
+    updateBadge();
+  }
+
+  function removeItem(id) {
+    cart = cart.filter(i => i.id !== id);
+    saveCart();
+    updateBadge();
+    renderDrawer();
+  }
+
+  function setQuantity(id, qty) {
+    const item = cart.find(i => i.id === id);
+    if (!item) return;
+    const n = Math.max(1, parseInt(qty) || 1);
+    item.quantity = n;
+    saveCart();
+    // Re-render just the footer (cheaper) but full drawer is simpler & safe
+    renderDrawer();
+  }
+
+  /* ── Badge ─────────────────────────── */
+  function updateBadge() {
+    const qty = getTotalQty();
+    if (qty > 0) {
+      cartBadge.textContent = qty > 99 ? '99+' : qty;
+      cartBadge.removeAttribute('hidden');
+    } else {
+      cartBadge.setAttribute('hidden', '');
+    }
+  }
+
+  /* ── Drawer open / close ───────────── */
+  function openDrawer() {
+    cartDrawer.classList.add('cart-drawer--open');
+    cartOverlay.classList.add('cart-overlay--visible');
+    cartDrawer.setAttribute('aria-hidden', 'false');
+    cartOverlay.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    renderDrawer();
+  }
+
+  function closeDrawer() {
+    cartDrawer.classList.remove('cart-drawer--open');
+    cartOverlay.classList.remove('cart-overlay--visible');
+    cartDrawer.setAttribute('aria-hidden', 'true');
+    cartOverlay.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+
+  /* ── Modal open / close ────────────── */
+  function openModal() {
+    checkoutModal.removeAttribute('hidden');
+    checkoutModal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    renderCheckoutForm();
+  }
+
+  function closeModal() {
+    checkoutModal.setAttribute('hidden', '');
+    checkoutModal.setAttribute('aria-hidden', 'true');
+    // Only restore scroll if drawer also closed
+    if (!cartDrawer.classList.contains('cart-drawer--open')) {
+      document.body.style.overflow = '';
+    }
+  }
+
+  /* ── Render drawer ─────────────────── */
+  function renderDrawer() {
+    // Empty state
+    if (cart.length === 0) {
+      cartBody.innerHTML = `
+        <div class="cart-empty">
+          <span class="cart-empty__icon" aria-hidden="true">🌿</span>
+          <p class="cart-empty__msg">Your cart is empty — browse our catalogue to add products.</p>
+          <button class="btn btn--outline-dark" id="cartBrowseBtn" style="margin-top:0.5rem">
+            Browse Products
+          </button>
+        </div>`;
+      cartFooter.innerHTML = '';
+      document.getElementById('cartBrowseBtn').addEventListener('click', () => {
+        closeDrawer();
+        document.getElementById('catalogue').scrollIntoView({ behavior: 'smooth' });
+      });
+      return;
+    }
+
+    // Item rows
+    cartBody.innerHTML = cart.map(item => {
+      const imgUrl = PRODUCT_IMAGES[item.id];
+      const initial = item.name.charAt(0).toUpperCase();
+      const thumbHTML = imgUrl
+        ? `<img class="cart-item__thumb" src="${escapeHTML(imgUrl)}" alt=""
+                onerror="this.outerHTML='<div class=\\'cart-item__thumb-ph\\'>${initial}</div>'">`
+        : `<div class="cart-item__thumb-ph" aria-hidden="true">${initial}</div>`;
+
+      const lineTotal = item.numericPrice
+        ? `$${(item.numericPrice * item.quantity).toFixed(2)}`
+        : '—';
+      const unitPrice = item.priceLabel || 'Price on request';
+
+      return `
+        <div class="cart-item" data-id="${escapeHTML(item.id)}">
+          ${thumbHTML}
+          <div class="cart-item__info">
+            <p class="cart-item__name">${escapeHTML(item.name)}</p>
+            <p class="cart-item__unit-price">${escapeHTML(unitPrice)}</p>
+            <div class="cart-item__qty-row">
+              <button class="cart-qty-btn cart-qty-minus" aria-label="Decrease quantity">−</button>
+              <input class="cart-qty-input" type="number" min="1" value="${item.quantity}"
+                     aria-label="Quantity">
+              <span class="cart-qty-unit">${escapeHTML(item.unit)}</span>
+              <button class="cart-qty-btn cart-qty-plus" aria-label="Increase quantity">+</button>
+            </div>
+          </div>
+          <div class="cart-item__right">
+            <span class="cart-item__line-total">${lineTotal}</span>
+            <button class="cart-item__remove" aria-label="Remove ${escapeHTML(item.name)}">✕ Remove</button>
+          </div>
+        </div>`;
+    }).join('');
+
+    // Wire up item events
+    cartBody.querySelectorAll('.cart-item').forEach(el => {
+      const id    = el.dataset.id;
+      const input = el.querySelector('.cart-qty-input');
+      el.querySelector('.cart-qty-minus').addEventListener('click', () => {
+        const cur = cart.find(i => i.id === id);
+        if (cur) setQuantity(id, cur.quantity - 1);
+      });
+      el.querySelector('.cart-qty-plus').addEventListener('click', () => {
+        const cur = cart.find(i => i.id === id);
+        if (cur) setQuantity(id, cur.quantity + 1);
+      });
+      input.addEventListener('change', () => setQuantity(id, input.value));
+      el.querySelector('.cart-item__remove').addEventListener('click', () => removeItem(id));
+    });
+
+    // Footer
+    const subtotal   = getSubtotal();
+    const belowMin   = subtotal < MIN_ORDER;
+    const hasUnpriced = cart.some(i => !i.numericPrice);
+
+    cartFooter.innerHTML = `
+      <div class="cart-subtotal">
+        <span class="cart-subtotal__label">Subtotal</span>
+        <span class="cart-subtotal__amount">$${subtotal.toFixed(2)} CAD</span>
+      </div>
+      ${hasUnpriced ? `<p class="cart-unpriced-note">* Some items are priced on request — final total may be higher.</p>` : ''}
+      ${belowMin ? `<p class="cart-min-warning">Add more products to reach the $200 CAD minimum order.</p>` : ''}
+      <div class="cart-notice">
+        Wholesale orders only. Minimum order $200 CAD. Our team will confirm your order and arrange shipping within 24–48 hours.
+      </div>
+      <button class="btn btn--primary cart-checkout-btn" id="cartCheckoutBtn" ${belowMin ? 'disabled' : ''}>
+        ${belowMin
+          ? 'Add more to reach $200 CAD'
+          : `Submit Order Request — $${subtotal.toFixed(2)} CAD`}
+      </button>`;
+
+    if (!belowMin) {
+      document.getElementById('cartCheckoutBtn').addEventListener('click', () => {
+        closeDrawer();
+        openModal();
+      });
+    }
+  }
+
+  /* ── Render checkout form ──────────── */
+  function renderCheckoutForm() {
+    const subtotal   = getSubtotal();
+    const hasUnpriced = cart.some(i => !i.numericPrice);
+
+    const tableRows = cart.map(item => {
+      const lineTotal = item.numericPrice
+        ? `$${(item.numericPrice * item.quantity).toFixed(2)}`
+        : 'On request';
+      return `<tr>
+        <td>${escapeHTML(item.name)}</td>
+        <td>${item.quantity} ${escapeHTML(item.unit)}</td>
+        <td>${escapeHTML(item.priceLabel || 'Price on request')}</td>
+        <td>${lineTotal}</td>
+      </tr>`;
+    }).join('');
+
+    checkoutContent.innerHTML = `
+      <div class="checkout-header">
+        <h2 id="checkoutModalTitle">Order Summary</h2>
+        <button class="checkout-header__close" id="checkoutClose" aria-label="Close">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+      <div class="checkout-body">
+        <div class="checkout-notice">
+          You are submitting a wholesale order request. Payment will be arranged by our team after
+          your order is confirmed. Minimum order $200 CAD.
+        </div>
+
+        <div class="checkout-summary">
+          <p class="checkout-summary__heading">Your Order</p>
+          <table class="checkout-table">
+            <thead>
+              <tr>
+                <th>Product</th><th>Qty</th><th>Unit Price</th><th>Total</th>
+              </tr>
+            </thead>
+            <tbody>${tableRows}</tbody>
+            <tfoot>
+              <tr>
+                <td colspan="3">
+                  Estimated Total${hasUnpriced ? ' (excl. on-request items)' : ''}
+                </td>
+                <td>$${subtotal.toFixed(2)} CAD</td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+
+        <hr class="checkout-divider">
+
+        <p class="checkout-form-heading">Your Details</p>
+        <form id="checkoutForm" novalidate>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="co-name">
+                Full Name <span class="required" aria-hidden="true">*</span>
+              </label>
+              <input class="form-input" id="co-name" name="fullName" type="text"
+                     required autocomplete="name" placeholder="Jane Smith">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="co-biz">
+                Business Name <span class="required" aria-hidden="true">*</span>
+              </label>
+              <input class="form-input" id="co-biz" name="businessName" type="text"
+                     required autocomplete="organization" placeholder="Acme Botanicals Ltd.">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="co-email">
+                Email Address <span class="required" aria-hidden="true">*</span>
+              </label>
+              <input class="form-input" id="co-email" name="email" type="email"
+                     required autocomplete="email" placeholder="jane@example.com">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="co-phone">
+                Phone Number <span class="optional">(optional)</span>
+              </label>
+              <input class="form-input" id="co-phone" name="phone" type="tel"
+                     autocomplete="tel" placeholder="+1 (416) 555-0123">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="co-address">
+              Shipping Address <span class="required" aria-hidden="true">*</span>
+            </label>
+            <textarea class="form-input form-textarea" id="co-address" name="address"
+                      rows="2" required autocomplete="street-address"
+                      placeholder="123 Main St, Toronto, ON M5V 1A1, Canada"></textarea>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="co-notes">
+              Order Notes <span class="optional">(optional)</span>
+            </label>
+            <textarea class="form-input form-textarea" id="co-notes" name="notes"
+                      rows="2"
+                      placeholder="Any special instructions or questions"></textarea>
+          </div>
+          <button type="submit" class="btn btn--primary btn--full" style="margin-top:0.5rem">
+            Submit Order
+          </button>
+        </form>
+      </div>`;
+
+    document.getElementById('checkoutClose').addEventListener('click', closeModal);
+    checkoutBackdrop.addEventListener('click', closeModal);
+    document.getElementById('checkoutForm').addEventListener('submit', handleOrderSubmit);
+  }
+
+  /* ── Handle order submission ───────── */
+  function handleOrderSubmit(e) {
+    e.preventDefault();
+    const form = e.target;
+
+    // Validate required fields
+    let valid = true;
+    form.querySelectorAll('[required]').forEach(field => {
+      field.classList.remove('form-input--error');
+      if (!field.value.trim()) {
+        field.classList.add('form-input--error');
+        valid = false;
+      }
+    });
+    if (!valid) {
+      form.querySelector('.form-input--error').focus();
+      return;
+    }
+
+    const data = Object.fromEntries(new FormData(form));
+    const subtotal = getSubtotal();
+
+    // Build email body
+    const itemLines = cart.map(item => {
+      const lineTotal = item.numericPrice
+        ? `$${(item.numericPrice * item.quantity).toFixed(2)} CAD`
+        : 'Price on request';
+      return `  • ${item.name}: ${item.quantity} ${item.unit} @ ${item.priceLabel || 'Price on request'} = ${lineTotal}`;
+    }).join('\n');
+
+    const emailBody =
+`NEW WHOLESALE ORDER REQUEST
+Premier Herbal Inc.
+===========================
+
+ORDER ITEMS
+-----------
+${itemLines}
+
+Estimated Total: $${subtotal.toFixed(2)} CAD
+(Final total confirmed by Premier Herbal team)
+
+CUSTOMER DETAILS
+----------------
+Name:             ${data.fullName}
+Business:         ${data.businessName}
+Email:            ${data.email}
+Phone:            ${data.phone || 'Not provided'}
+Shipping Address: ${data.address}
+Notes:            ${data.notes || 'None'}
+
+---
+Order submitted via premierherbal.ca`;
+
+    /* =========================================================
+       STRIPE CHECKOUT GOES HERE
+       Replace this mailto section with Stripe Checkout
+       when keys are ready.
+       ========================================================= */
+    const subject = 'New Wholesale Order Request — Premier Herbal Inc.';
+    window.location.href =
+      `mailto:Premierherbal99@gmail.com`
+      + `?subject=${encodeURIComponent(subject)}`
+      + `&body=${encodeURIComponent(emailBody)}`;
+
+    // Clear cart after submission
+    clearCart();
+
+    // Show confirmation screen
+    showConfirmation();
+  }
+
+  /* ── Confirmation screen ───────────── */
+  function showConfirmation() {
+    checkoutContent.innerHTML = `
+      <div class="checkout-header">
+        <h2>Order Submitted</h2>
+        <button class="checkout-header__close" id="confirmClose" aria-label="Close">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+      <div class="checkout-body">
+        <div class="checkout-confirm">
+          <span class="checkout-confirm__icon" aria-hidden="true">✿</span>
+          <h2>Your order request has been submitted.</h2>
+          <p>
+            The Premier Herbal team will contact you within 24 to 48 business hours
+            to confirm your order and arrange payment and shipping.
+          </p>
+          <p>
+            If you have any questions email
+            <a href="mailto:Premierherbal99@gmail.com">Premierherbal99@gmail.com</a> directly.
+          </p>
+          <div class="checkout-confirm__btns">
+            <button class="btn btn--outline-dark" id="confirmClose2">Close</button>
+            <a href="#catalogue" class="btn btn--primary" id="confirmCatalogue">
+              Back to Catalogue
+            </a>
+          </div>
+        </div>
+      </div>`;
+
+    document.getElementById('confirmClose').addEventListener('click', closeModal);
+    document.getElementById('confirmClose2').addEventListener('click', closeModal);
+    document.getElementById('confirmCatalogue').addEventListener('click', () => {
+      closeModal();
+      document.getElementById('catalogue').scrollIntoView({ behavior: 'smooth' });
+    });
+  }
+
+  /* ── Add to Cart — event delegation on grid ── */
+  if (productGrid) {
+    productGrid.addEventListener('click', e => {
+      const btn = e.target.closest('.product-card__add-btn');
+      if (!btn) return;
+      const name  = btn.dataset.name;
+      const price = btn.dataset.price;
+      addItem(name, price);
+      btn.textContent = 'Added ✓';
+      btn.classList.add('product-card__add-btn--added');
+      setTimeout(() => {
+        btn.textContent = 'Add to Cart';
+        btn.classList.remove('product-card__add-btn--added');
+      }, 1000);
+    });
+  }
+
+  /* ── Keyboard — Escape closes ──────── */
+  document.addEventListener('keydown', e => {
+    if (e.key !== 'Escape') return;
+    if (!checkoutModal.hasAttribute('hidden')) { closeModal(); return; }
+    if (cartDrawer.classList.contains('cart-drawer--open')) closeDrawer();
+  });
+
+  /* ── Wire nav events ───────────────── */
+  cartBtn.addEventListener('click', openDrawer);
+  cartClose.addEventListener('click', closeDrawer);
+  cartOverlay.addEventListener('click', closeDrawer);
+
+  /* ── Init badge from persisted cart ── */
+  updateBadge();
 }
