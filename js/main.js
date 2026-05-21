@@ -697,6 +697,14 @@ document.addEventListener('DOMContentLoaded', () => {
   initScrollAnimations();
   initSmoothScroll();
   initProductAutocomplete();
+
+  // Hero "Start Order Request" button — opens the order request drawer
+  const heroOrderBtn = document.getElementById('heroOrderBtn');
+  if (heroOrderBtn) {
+    heroOrderBtn.addEventListener('click', () => {
+      document.getElementById('cartBtn').click();
+    });
+  }
 });
 
 /* ─────────────────────────────────────────
@@ -980,16 +988,12 @@ function initCatalogue() {
     });
   }
 
-  const FORM_LABELS = { 'Cut Sifted': 'C/S', 'Whole': 'W', 'Powder': 'PWD' };
+  const FORM_LABELS = { 'Cut & Sifted': 'C/S', 'Whole': 'W', 'Powder': 'PWD' };
 
   /* Generate HTML string for a single product card */
   function createCardHTML(product, index) {
     const formLabel = FORM_LABELS[product.form] || escapeHTML(product.form);
     const priceKey  = product.title.toLowerCase().trim();
-    const priceVal  = PRODUCT_PRICES[priceKey];
-    const priceHTML = priceVal
-      ? `<span class="product-card__price">${escapeHTML(priceVal)}</span>`
-      : `<span class="product-card__price product-card__price--muted">Price on request</span>`;
 
     const imgUrl  = PRODUCT_IMAGES[priceKey];
     const initial = escapeHTML(product.title.charAt(0).toUpperCase());
@@ -1008,13 +1012,14 @@ function initCatalogue() {
         <div class="product-card__body">
           <div class="product-card__name-row">
             <h3 class="product-card__name">${escapeHTML(product.title)}</h3>
-            ${priceHTML}
+            <span class="product-card__price product-card__price--muted">Price on Request</span>
           </div>
+          <p class="product-card__unit-label">Sold by the pound (lb)</p>
           <hr class="product-card__divider">
           <button class="product-card__add-btn"
                   data-name="${escapeHTML(product.title)}"
-                  data-price="${escapeHTML(priceVal || '')}">
-            Add to Cart
+                  data-price="">
+            Add to Order
           </button>
         </div>
       </article>
@@ -1390,7 +1395,7 @@ function initCart() {
       cartBody.innerHTML = `
         <div class="cart-empty">
           <span class="cart-empty__icon" aria-hidden="true">🌿</span>
-          <p class="cart-empty__msg">Your cart is empty — browse our catalogue to add products.</p>
+          <p class="cart-empty__msg">Your order request is empty — browse our catalogue to add products.</p>
           <button class="btn btn--outline-dark" id="cartBrowseBtn" style="margin-top:0.5rem">
             Browse Products
           </button>
@@ -1412,27 +1417,21 @@ function initCart() {
                 onerror="this.outerHTML='<div class=\\'cart-item__thumb-ph\\'>${initial}</div>'">`
         : `<div class="cart-item__thumb-ph" aria-hidden="true">${initial}</div>`;
 
-      const lineTotal = item.numericPrice
-        ? `$${(item.numericPrice * item.quantity).toFixed(2)}`
-        : '—';
-      const unitPrice = item.priceLabel || 'Price on request';
-
       return `
         <div class="cart-item" data-id="${escapeHTML(item.id)}">
           ${thumbHTML}
           <div class="cart-item__info">
             <p class="cart-item__name">${escapeHTML(item.name)}</p>
-            <p class="cart-item__unit-price">${escapeHTML(unitPrice)}</p>
+            <p class="cart-item__unit-price">Price on Request · sold by the lb</p>
             <div class="cart-item__qty-row">
               <button class="cart-qty-btn cart-qty-minus" aria-label="Decrease quantity">−</button>
               <input class="cart-qty-input" type="number" min="1" value="${item.quantity}"
-                     aria-label="Quantity">
-              <span class="cart-qty-unit">${escapeHTML(item.unit)}</span>
+                     aria-label="Quantity in pounds">
+              <span class="cart-qty-unit">lb</span>
               <button class="cart-qty-btn cart-qty-plus" aria-label="Increase quantity">+</button>
             </div>
           </div>
           <div class="cart-item__right">
-            <span class="cart-item__line-total">${lineTotal}</span>
             <button class="cart-item__remove" aria-label="Remove ${escapeHTML(item.name)}">✕ Remove</button>
           </div>
         </div>`;
@@ -1455,54 +1454,34 @@ function initCart() {
     });
 
     // Footer
-    const subtotal   = getSubtotal();
-    const belowMin   = subtotal < MIN_ORDER;
-    const hasUnpriced = cart.some(i => !i.numericPrice);
-
     cartFooter.innerHTML = `
-      <div class="cart-subtotal">
-        <span class="cart-subtotal__label">Subtotal</span>
-        <span class="cart-subtotal__amount">$${subtotal.toFixed(2)} CAD</span>
-      </div>
-      ${hasUnpriced ? `<p class="cart-unpriced-note">* Some items are priced on request — final total may be higher.</p>` : ''}
-      ${belowMin ? `<p class="cart-min-warning">Add more products to reach the $200 CAD minimum order.</p>` : ''}
       <div class="cart-notice">
-        Wholesale orders only. Minimum order $200 CAD. Our team will confirm your order and arrange shipping within 24–48 hours.
+        Wholesale orders only · All items sold by the pound · Pricing provided on request.
+        Our team will contact you within 1 business day with pricing and availability.
       </div>
-      <button class="btn btn--primary cart-checkout-btn" id="cartCheckoutBtn" ${belowMin ? 'disabled' : ''}>
-        ${belowMin
-          ? 'Add more to reach $200 CAD'
-          : `Submit Order Request — $${subtotal.toFixed(2)} CAD`}
+      <button class="btn btn--primary cart-checkout-btn" id="cartCheckoutBtn">
+        Submit Order Request
       </button>`;
 
-    if (!belowMin) {
-      document.getElementById('cartCheckoutBtn').addEventListener('click', () => {
-        closeDrawer();
-        openModal();
-      });
-    }
+    document.getElementById('cartCheckoutBtn').addEventListener('click', () => {
+      closeDrawer();
+      openModal();
+    });
   }
 
   /* ── Render checkout form ──────────── */
   function renderCheckoutForm() {
-    const subtotal   = getSubtotal();
-    const hasUnpriced = cart.some(i => !i.numericPrice);
-
     const tableRows = cart.map(item => {
-      const lineTotal = item.numericPrice
-        ? `$${(item.numericPrice * item.quantity).toFixed(2)}`
-        : 'On request';
       return `<tr>
         <td>${escapeHTML(item.name)}</td>
-        <td>${item.quantity} ${escapeHTML(item.unit)}</td>
-        <td>${escapeHTML(item.priceLabel || 'Price on request')}</td>
-        <td>${lineTotal}</td>
+        <td>${item.quantity} lb</td>
+        <td>Price on Request</td>
       </tr>`;
     }).join('');
 
     checkoutContent.innerHTML = `
       <div class="checkout-header">
-        <h2 id="checkoutModalTitle">Order Summary</h2>
+        <h2 id="checkoutModalTitle">Wholesale Order Request</h2>
         <button class="checkout-header__close" id="checkoutClose" aria-label="Close">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
                stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true">
@@ -1513,8 +1492,8 @@ function initCart() {
       </div>
       <div class="checkout-body">
         <div class="checkout-notice">
-          You are submitting a wholesale order request. Payment will be arranged by our team after
-          your order is confirmed. Minimum order $200 CAD.
+          You are submitting a wholesale order request. Our team will contact you within
+          1 business day with pricing and availability. All items are sold by the pound.
         </div>
 
         <div class="checkout-summary">
@@ -1522,18 +1501,10 @@ function initCart() {
           <table class="checkout-table">
             <thead>
               <tr>
-                <th>Product</th><th>Qty</th><th>Unit Price</th><th>Total</th>
+                <th>Product</th><th>Qty (lbs)</th><th>Price</th>
               </tr>
             </thead>
             <tbody>${tableRows}</tbody>
-            <tfoot>
-              <tr>
-                <td colspan="3">
-                  Estimated Total${hasUnpriced ? ' (excl. on-request items)' : ''}
-                </td>
-                <td>$${subtotal.toFixed(2)} CAD</td>
-              </tr>
-            </tfoot>
           </table>
         </div>
 
@@ -1567,10 +1538,10 @@ function initCart() {
             </div>
             <div class="form-group">
               <label class="form-label" for="co-phone">
-                Phone Number <span class="optional">(optional)</span>
+                Phone Number <span class="required" aria-hidden="true">*</span>
               </label>
               <input class="form-input" id="co-phone" name="phone" type="tel"
-                     autocomplete="tel" placeholder="+1 (416) 555-0123">
+                     required autocomplete="tel" placeholder="+1 (416) 555-0123">
             </div>
           </div>
           <div class="form-group">
@@ -1590,7 +1561,7 @@ function initCart() {
                       placeholder="Any special instructions or questions"></textarea>
           </div>
           <button type="submit" class="btn btn--primary btn--full" style="margin-top:0.5rem">
-            Submit Order
+            Send Order Request
           </button>
         </form>
       </div>`;
@@ -1620,14 +1591,10 @@ function initCart() {
     }
 
     const data = Object.fromEntries(new FormData(form));
-    const subtotal = getSubtotal();
 
     // Build email body
     const itemLines = cart.map(item => {
-      const lineTotal = item.numericPrice
-        ? `$${(item.numericPrice * item.quantity).toFixed(2)} CAD`
-        : 'Price on request';
-      return `  • ${item.name}: ${item.quantity} ${item.unit} @ ${item.priceLabel || 'Price on request'} = ${lineTotal}`;
+      return `  • ${item.name}: ${item.quantity} lb — Price on Request`;
     }).join('\n');
 
     const emailBody =
@@ -1635,12 +1602,9 @@ function initCart() {
 Premier Herbal Inc.
 ===========================
 
-ORDER ITEMS
------------
+ORDER ITEMS (all sold by the pound)
+------------------------------------
 ${itemLines}
-
-Estimated Total: $${subtotal.toFixed(2)} CAD
-(Final total confirmed by Premier Herbal team)
 
 CUSTOMER DETAILS
 ----------------
@@ -1688,14 +1652,13 @@ Order submitted via premierherbal.ca`;
       <div class="checkout-body">
         <div class="checkout-confirm">
           <span class="checkout-confirm__icon" aria-hidden="true">✿</span>
-          <h2>Your order request has been submitted.</h2>
+          <h2>Thank you — your order request has been received.</h2>
           <p>
-            The Premier Herbal team will contact you within 24 to 48 business hours
-            to confirm your order and arrange payment and shipping.
+            We'll contact you within 1 business day with pricing and availability.
           </p>
           <p>
-            If you have any questions email
-            <a href="mailto:Premierherbal99@gmail.com">Premierherbal99@gmail.com</a> directly.
+            Questions? Email us directly at
+            <a href="mailto:Premierherbal99@gmail.com">Premierherbal99@gmail.com</a>.
           </p>
           <div class="checkout-confirm__btns">
             <button class="btn btn--outline-dark" id="confirmClose2">Close</button>
@@ -1714,7 +1677,7 @@ Order submitted via premierherbal.ca`;
     });
   }
 
-  /* ── Add to Cart — event delegation on grid ── */
+  /* ── Add to Order — event delegation on grid ── */
   if (productGrid) {
     productGrid.addEventListener('click', e => {
       const btn = e.target.closest('.product-card__add-btn');
@@ -1725,7 +1688,7 @@ Order submitted via premierherbal.ca`;
       btn.textContent = 'Added ✓';
       btn.classList.add('product-card__add-btn--added');
       setTimeout(() => {
-        btn.textContent = 'Add to Cart';
+        btn.textContent = 'Add to Order';
         btn.classList.remove('product-card__add-btn--added');
       }, 1000);
     });

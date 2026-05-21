@@ -54,7 +54,7 @@
       </button>
 
       <!-- Cart button -->
-      <button class="nav__cart-btn" id="cartBtn" aria-label="Open cart">
+      <button class="nav__cart-btn" id="cartBtn" aria-label="Open order request">
         <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle>
           <path d="M1 1h4l2.68 13.39a2 2 0 001.99 1.61h9.72a2 2 0 001.99-1.62L21 5H6"></path>
@@ -90,16 +90,17 @@
         </p>
 
         <h1 class="hero__heading fade-in-2">
-          Canada's Trusted Wholesale<br />Herb &amp; Spice Supplier
+          Over 200 products available in bulk wholesale quantities.
         </h1>
 
         <p class="hero__subheading fade-in-3">
-          Supplying over 400 premium herbs &amp; spices to businesses across the world since 1999.
+          Everything sold by the pound. Submit your wholesale order request today.
         </p>
 
         <div class="hero__actions fade-in-4">
-          <a href="#catalogue" class="btn btn--primary">Browse Catalogue</a>
-          <a href="#contact"   class="btn btn--outline">Request a Quote</a>
+          <a href="#contact"   class="btn btn--primary">Request Wholesale Quote</a>
+          <a href="#catalogue" class="btn btn--outline">Browse Products</a>
+          <button class="btn btn--outline" id="heroOrderBtn">Start Order Request</button>
         </div>
       </div>
 
@@ -211,8 +212,8 @@
           <span class="section-eyebrow">Full Product List</span>
           <h2 class="section-heading">Our Herbs &amp; Spices Catalogue</h2>
           <p class="catalogue__subheading">
-            Over 400 products available in bulk wholesale quantities.
-            <strong>Minimum order: $200 CAD.</strong>
+            Over 200 products available in bulk wholesale quantities.
+            All items sold by the pound. Pricing provided on request.
           </p>
         </header>
 
@@ -528,7 +529,7 @@
          aria-label="Wholesale cart" aria-hidden="true">
 
     <header class="cart-drawer__header">
-      <h2 class="cart-drawer__title">Your Wholesale Cart</h2>
+      <h2 class="cart-drawer__title">Your Wholesale Order Request</h2>
       <button class="cart-drawer__close" id="cartClose" aria-label="Close cart">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
              stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true">
