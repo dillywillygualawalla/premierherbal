@@ -698,13 +698,6 @@ document.addEventListener('DOMContentLoaded', () => {
   initSmoothScroll();
   initProductAutocomplete();
 
-  // Hero "Start Order Request" button — opens the order request drawer
-  const heroOrderBtn = document.getElementById('heroOrderBtn');
-  if (heroOrderBtn) {
-    heroOrderBtn.addEventListener('click', () => {
-      document.getElementById('cartBtn').click();
-    });
-  }
 });
 
 /* ─────────────────────────────────────────
@@ -988,7 +981,7 @@ function initCatalogue() {
     });
   }
 
-  const FORM_LABELS = { 'Cut & Sifted': 'C/S', 'Whole': 'W', 'Powder': 'PWD' };
+  const FORM_LABELS = { 'Cut & Sifted': 'Cut & Sifted', 'Whole': 'Whole', 'Powder': 'Powder' };
 
   /* Generate HTML string for a single product card */
   function createCardHTML(product, index) {
@@ -1014,7 +1007,6 @@ function initCatalogue() {
             <h3 class="product-card__name">${escapeHTML(product.title)}</h3>
             <span class="product-card__price product-card__price--muted">Price on Request</span>
           </div>
-          <p class="product-card__unit-label">Sold by the pound (lb)</p>
           <hr class="product-card__divider">
           <button class="product-card__add-btn"
                   data-name="${escapeHTML(product.title)}"
