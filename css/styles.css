@@ -530,6 +530,7 @@ button { cursor: pointer; font-family: inherit; }
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1rem;
+  align-items: stretch;
 }
 
 /* Product card */
@@ -556,12 +557,20 @@ button { cursor: pointer; font-family: inherit; }
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08), 0 8px 28px rgba(45, 74, 45, 0.10);
 }
 
-/* Image area */
+/* Image area — 1:1 square, consistent across all cards */
 .product-card__img-wrap {
   position: relative;
-  height: 180px;
+  width: 100%;
+  aspect-ratio: 1 / 1;
   flex-shrink: 0;
   background: var(--cream);
+  overflow: hidden;
+  border-radius: 8px 8px 0 0;
+}
+
+@keyframes imgFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
 
 .product-card__img {
@@ -569,6 +578,7 @@ button { cursor: pointer; font-family: inherit; }
   height: 100%;
   object-fit: cover;
   display: block;
+  animation: imgFadeIn 0.35s ease both;
 }
 
 .product-card__placeholder {
