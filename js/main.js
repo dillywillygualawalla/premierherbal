@@ -745,7 +745,6 @@ const PRODUCT_LOCAL_IMAGES = {
   'ajawan seed|whole': 'images/product-images/ajawan-seed-whole.png',
   'alfaalfa seed|whole': 'images/product-images/alfaalfa-seed-whole.png',
   'allspice|whole': 'images/product-images/allspice-whole.png',
-  'aloe vera|whole': 'images/product-images/aloe-vera-powder.png',
   'aloe vera|powder': 'images/product-images/aloe-vera-powder.png',
   'amla|whole': 'images/product-images/amla-cut-and-sifted.png',
   'angelica root|cut & sifted': 'images/product-images/angelica-root-cut-and-sifted.png',

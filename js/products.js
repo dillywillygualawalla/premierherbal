@@ -13,7 +13,6 @@ const ALL_PRODUCTS = [
   { title: "Ajawan Seed", uses: ["Culinary", "Digestive"], form: "Whole" },
   { title: "Alfaalfa Seed", uses: ["Culinary", "Supplement"], form: "Whole" },
   { title: "Allspice", uses: ["Culinary", "Spice"], form: "Whole" },
-  { title: "Aloe Vera", uses: ["Digestive", "Skincare"], form: "Whole" },
   { title: "Aloe Vera", uses: ["Digestive", "Skincare"], form: "Powder" },
   { title: "Amla", uses: ["Ayurvedic", "Antioxidant"], form: "Whole" },
   { title: "Angelica Root", uses: ["Digestive", "Medicinal"], form: "Cut & Sifted" },
