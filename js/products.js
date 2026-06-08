@@ -4,8 +4,8 @@
    ============================================================= */
 
 const ALL_PRODUCTS = [
-  { title: "Acacia Catechu", uses: ["Ayurvedic", "Medicinal"], form: "Cut & Sifted" },
-  { title: "Acai Berry", uses: ["Antioxidant", "Supplement"], form: "Whole" },
+  { title: "Acacia Catechu", uses: ["Ayurvedic", "Medicinal"], form: "Powder" },
+  { title: "Acai Berry", uses: ["Antioxidant", "Supplement"], form: "Powder" },
   { title: "Acerola Berry- 25%", uses: ["Supplement", "Vitamin C"], form: "Powder" },
   { title: "Activated Charcoal", uses: ["Detox", "Supplement"], form: "Powder" },
   { title: "African Chili Bird Pepper", uses: ["Culinary", "Spice"], form: "Powder" },

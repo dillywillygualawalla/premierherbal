@@ -736,8 +736,8 @@ function initNav() {
    Falls back to title-only via PRODUCT_IMAGES_BY_TITLE
 ───────────────────────────────────────── */
 const PRODUCT_LOCAL_IMAGES = {
-  'acacia catechu|cut & sifted': 'images/product-images/acacia-catechu.png',
-  'acai berry|whole': 'images/product-images/acai-berry-powder.png',
+  'acacia catechu|powder': 'images/product-images/acacia-catechu.png',
+  'acai berry|powder': 'images/product-images/acai-berry-powder.png',
   'acerola berry- 25%|powder': 'images/product-images/acerola-berry-25.png',
   'activated charcoal|powder': 'images/product-images/activated-charcoal-powder.png',
   'african chili bird pepper|powder': 'images/product-images/african-chili-bird-pepper-powder.png',
