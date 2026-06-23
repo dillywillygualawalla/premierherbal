@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wholesale Herb &amp; Spice Supplier — Premier Herbal Inc.</title>
+  <meta name="description" content="Toronto-based bulk herb supplier since 1999. 400+ herbs, spices and botanicals shipped across Canada. Request a wholesale quote today." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --green:      #2D4A2D;
+      --green-dark: #1f3520;
+      --green-mid:  #3a5e3a;
+      --cream:      #F5EDD6;
+      --brown:      #6B3F1F;
+      --brown-dark: #4a2b12;
+      --gold:       #C9A84C;
+      --off-white:  #FDFAF3;
+      --font-heading: 'Playfair Display', Georgia, serif;
+      --font-body:    'Lato', system-ui, sans-serif;
+      --radius:     8px;
+      --shadow:     0 8px 40px rgba(0,0,0,0.28);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--green-dark);
+      color: var(--cream);
+      min-height: 100vh;
+    }
+
+    /* ── Header ──────────────────────────────── */
+    .site-header {
+      background: rgba(31, 53, 32, 0.96);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid rgba(201, 168, 76, 0.18);
+      padding: 0.9rem 1.5rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .site-header__inner {
+      max-width: 960px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .site-header__brand {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      text-decoration: none;
+    }
+
+    .site-header__leaf {
+      width: 28px;
+      height: 28px;
+      flex-shrink: 0;
+    }
+
+    .site-header__name {
+      font-family: var(--font-heading);
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--cream);
+      line-height: 1.2;
+    }
+
+    .site-header__name span {
+      display: block;
+      font-family: var(--font-body);
+      font-size: 0.65rem;
+      font-weight: 400;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(245,237,214,0.5);
+    }
+
+    .site-header__tag {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--gold);
+      border: 1px solid rgba(201,168,76,0.35);
+      border-radius: 50px;
+      padding: 0.25rem 0.75rem;
+      white-space: nowrap;
+    }
+
+    /* ── Hero ────────────────────────────────── */
+    .hero {
+      padding: 3.5rem 1.5rem 0;
+      text-align: center;
+    }
+
+    .hero__inner {
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .hero__eyebrow {
+      display: inline-block;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--gold);
+      border: 1px solid rgba(201,168,76,0.35);
+      border-radius: 50px;
+      padding: 0.28rem 0.85rem;
+      margin-bottom: 1.1rem;
+    }
+
+    .hero__heading {
+      font-family: var(--font-heading);
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 700;
+      line-height: 1.18;
+      color: var(--cream);
+      margin-bottom: 0.85rem;
+    }
+
+    .hero__sub {
+      font-size: 1.05rem;
+      font-weight: 300;
+      line-height: 1.7;
+      color: rgba(245,237,214,0.72);
+      max-width: 540px;
+      margin: 0 auto 2.5rem;
+    }
+
+    /* ── Trust badges ────────────────────────── */
+    .trust {
+      display: flex;
+      justify-content: center;
+      gap: 0;
+      max-width: 700px;
+      margin: 0 auto 3rem;
+      border: 1px solid rgba(201,168,76,0.22);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .trust__item {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 1.1rem 1rem;
+      background: rgba(255,255,255,0.03);
+      border-right: 1px solid rgba(201,168,76,0.22);
+      text-align: center;
+    }
+
+    .trust__item:last-child { border-right: none; }
+
+    .trust__icon { font-size: 1.25rem; line-height: 1; }
+
+    .trust__label {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--cream);
+      letter-spacing: 0.02em;
+      line-height: 1.3;
+    }
+
+    /* ── Form section ────────────────────────── */
+    .form-section {
+      padding: 0 1.5rem 5rem;
+    }
+
+    .form-wrap {
+      max-width: 700px;
+      margin: 0 auto;
+      background: var(--off-white);
+      border-radius: 14px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .form-wrap__header {
+      background: var(--green);
+      padding: 1.5rem 2rem;
+      border-bottom: 2px solid rgba(201,168,76,0.3);
+    }
+
+    .form-wrap__title {
+      font-family: var(--font-heading);
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--cream);
+      margin-bottom: 0.25rem;
+    }
+
+    .form-wrap__sub {
+      font-size: 0.83rem;
+      color: rgba(245,237,214,0.65);
+      line-height: 1.5;
+    }
+
+    .form-body {
+      padding: 2rem;
+    }
+
+    /* ── Form fields ─────────────────────────── */
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.1rem;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      margin-bottom: 1.1rem;
+    }
+
+    .form-group:last-of-type { margin-bottom: 0; }
+
+    .form-group--full { grid-column: 1 / -1; }
+
+    label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--brown);
+    }
+
+    label .req {
+      color: #c0392b;
+      margin-left: 0.2rem;
+    }
+
+    input, select, textarea {
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      color: var(--brown-dark);
+      background: #fff;
+      border: 1.5px solid rgba(107,63,31,0.18);
+      border-radius: var(--radius);
+      padding: 0.68rem 0.9rem;
+      width: 100%;
+      transition: border-color 0.18s, box-shadow 0.18s;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+
+    input::placeholder, textarea::placeholder {
+      color: rgba(0,0,0,0.28);
+      font-style: italic;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: var(--green);
+      box-shadow: 0 0 0 3px rgba(45,74,45,0.13);
+    }
+
+    input.error, select.error, textarea.error {
+      border-color: #c0392b;
+      box-shadow: 0 0 0 3px rgba(192,57,43,0.1);
+    }
+
+    .field-error {
+      font-size: 0.73rem;
+      color: #c0392b;
+      margin-top: 0.15rem;
+      display: none;
+    }
+
+    .field-error.visible { display: block; }
+
+    textarea {
+      resize: vertical;
+      min-height: 100px;
+      line-height: 1.6;
+    }
+
+    .select-wrap {
+      position: relative;
+    }
+
+    .select-wrap::after {
+      content: '';
+      position: absolute;
+      right: 0.9rem;
+      top: 50%;
+      transform: translateY(-50%);
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      border-top: 5px solid var(--brown);
+      pointer-events: none;
+    }
+
+    select { cursor: pointer; padding-right: 2.25rem; }
+
+    /* ── Submit ──────────────────────────────── */
+    .form-footer {
+      margin-top: 1.75rem;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0.75rem;
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 1rem 1.5rem;
+      background: var(--green);
+      color: var(--cream);
+      font-family: var(--font-body);
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      border: none;
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: background 0.18s, transform 0.15s, box-shadow 0.15s;
+      position: relative;
+    }
+
+    .submit-btn:hover:not(:disabled) {
+      background: var(--green-dark);
+      transform: translateY(-1px);
+      box-shadow: 0 5px 20px rgba(45,74,45,0.35);
+    }
+
+    .submit-btn:active:not(:disabled) { transform: none; }
+
+    .submit-btn:disabled {
+      opacity: 0.65;
+      cursor: not-allowed;
+    }
+
+    .submit-note {
+      text-align: center;
+      font-size: 0.78rem;
+      color: rgba(107,63,31,0.55);
+      line-height: 1.55;
+    }
+
+    .submit-note strong { color: rgba(107,63,31,0.8); }
+
+    /* ── Thank you state ─────────────────────── */
+    .thankyou {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 1rem;
+      padding: 3rem 2rem;
+    }
+
+    .thankyou__icon {
+      width: 60px;
+      height: 60px;
+      background: rgba(45,74,45,0.1);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.75rem;
+    }
+
+    .thankyou__heading {
+      font-family: var(--font-heading);
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--green);
+    }
+
+    .thankyou__body {
+      font-size: 0.95rem;
+      color: rgba(107,63,31,0.75);
+      line-height: 1.65;
+      max-width: 400px;
+    }
+
+    /* ── Footer ──────────────────────────────── */
+    .site-footer {
+      text-align: center;
+      padding: 1.5rem 1.25rem;
+      font-size: 0.73rem;
+      color: rgba(245,237,214,0.28);
+      letter-spacing: 0.04em;
+    }
+
+    .site-footer a {
+      color: rgba(245,237,214,0.4);
+      text-decoration: none;
+    }
+
+    .site-footer a:hover { color: var(--gold); }
+
+    /* ── Responsive ──────────────────────────── */
+    @media (max-width: 580px) {
+      .hero { padding: 2.5rem 1.25rem 0; }
+      .form-section { padding: 0 1rem 4rem; }
+      .form-body { padding: 1.5rem 1.25rem; }
+      .form-wrap__header { padding: 1.25rem 1.25rem; }
+      .form-row { grid-template-columns: 1fr; }
+      .trust { flex-direction: column; border-radius: 10px; }
+      .trust__item { border-right: none; border-bottom: 1px solid rgba(201,168,76,0.22); }
+      .trust__item:last-child { border-bottom: none; }
+      .site-header__tag { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="site-header">
+  <div class="site-header__inner">
+    <a href="/" class="site-header__brand">
+      <svg class="site-header__leaf" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M14 25C14 25 5.5 18.5 5.5 12C5.5 7.86 9.36 4.5 14 4.5C18.64 4.5 22.5 7.86 22.5 12C22.5 18.5 14 25 14 25Z" fill="rgba(201,168,76,0.18)" stroke="#C9A84C" stroke-width="1.2"/>
+        <line x1="14" y1="25" x2="14" y2="9.5" stroke="#C9A84C" stroke-width="1" stroke-linecap="round"/>
+        <path d="M14 15.5C14 15.5 10 13 9.5 10" stroke="#C9A84C" stroke-width="0.9" stroke-linecap="round"/>
+        <path d="M14 19C14 19 18 16.5 18.5 13" stroke="#C9A84C" stroke-width="0.9" stroke-linecap="round"/>
+      </svg>
+      <div class="site-header__name">
+        Premier Herbal Inc.
+        <span>Wholesale Herb &amp; Spice Supplier</span>
+      </div>
+    </a>
+    <div class="site-header__tag">Toronto · Est. 1999</div>
+  </div>
+</header>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero__inner">
+    <div class="hero__eyebrow">Wholesale Inquiries</div>
+    <h1 class="hero__heading">Bulk Herbs, Spices &amp; Botanicals<br>Shipped Across Canada</h1>
+    <p class="hero__sub">Toronto based since 1999. 400+ products available by the kilo. Same week shipping.</p>
+  </div>
+
+  <!-- Trust badges -->
+  <div class="trust" role="list">
+    <div class="trust__item" role="listitem">
+      <div class="trust__icon">🌿</div>
+      <div class="trust__label">400+ Products<br>In Stock</div>
+    </div>
+    <div class="trust__item" role="listitem">
+      <div class="trust__icon">🚚</div>
+      <div class="trust__label">Ships Within<br>2 Business Days</div>
+    </div>
+    <div class="trust__item" role="listitem">
+      <div class="trust__icon">📋</div>
+      <div class="trust__label">CoAs Available<br>For All Products</div>
+    </div>
+  </div>
+</section>
+
+<!-- Form -->
+<section class="form-section">
+  <div class="form-wrap">
+
+    <div class="form-wrap__header">
+      <div class="form-wrap__title">Request a Wholesale Quote</div>
+      <div class="form-wrap__sub">Tell us what you need — we'll respond with pricing within the hour during business hours.</div>
+    </div>
+
+    <!-- Netlify form -->
+    <form
+      id="wholesaleForm"
+      class="form-body"
+      name="wholesale-inquiry"
+      method="POST"
+      data-netlify="true"
+      netlify-honeypot="bot-field"
+      novalidate
+    >
+      <input type="hidden" name="form-name" value="wholesale-inquiry" />
+      <p style="display:none"><label>Don't fill: <input name="bot-field" /></label></p>
+
+      <!-- Row 1: Name + Business -->
+      <div class="form-row">
+        <div class="form-group">
+          <label for="full-name">Full Name <span class="req">*</span></label>
+          <input type="text" id="full-name" name="full-name" required autocomplete="name" placeholder="Jane Smith" />
+          <span class="field-error" id="full-name-err">Please enter your name.</span>
+        </div>
+        <div class="form-group">
+          <label for="business-name">Business Name <span class="req">*</span></label>
+          <input type="text" id="business-name" name="business-name" required autocomplete="organization" placeholder="Acme Botanicals Ltd." />
+          <span class="field-error" id="business-name-err">Please enter your business name.</span>
+        </div>
+      </div>
+
+      <!-- Row 2: Business type + Province -->
+      <div class="form-row">
+        <div class="form-group">
+          <label for="business-type">Business Type</label>
+          <div class="select-wrap">
+            <select id="business-type" name="business-type">
+              <option value="" disabled selected>Select type…</option>
+              <option>Tea Brand</option>
+              <option>Supplement Company</option>
+              <option>Naturopath / Health Clinic</option>
+              <option>Craft Distillery / Brewery</option>
+              <option>Cosmetic / Skincare Maker</option>
+              <option>Health Food Store</option>
+              <option>Restaurant / Cafe</option>
+              <option>Grocery Store</option>
+              <option>Other</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="province">Province / Location</label>
+          <div class="select-wrap">
+            <select id="province" name="province">
+              <option value="" disabled selected>Select province…</option>
+              <option>Alberta</option>
+              <option>British Columbia</option>
+              <option>Manitoba</option>
+              <option>New Brunswick</option>
+              <option>Newfoundland and Labrador</option>
+              <option>Northwest Territories</option>
+              <option>Nova Scotia</option>
+              <option>Nunavut</option>
+              <option>Ontario</option>
+              <option>Prince Edward Island</option>
+              <option>Quebec</option>
+              <option>Saskatchewan</option>
+              <option>Yukon</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Products textarea -->
+      <div class="form-group">
+        <label for="products">Products You Are Looking For</label>
+        <textarea
+          id="products"
+          name="products"
+          rows="4"
+          placeholder="e.g. Hibiscus Flower, Ashwagandha Powder, Juniper Berry..."
+        ></textarea>
+      </div>
+
+      <!-- Row 3: Quantity + Email -->
+      <div class="form-row">
+        <div class="form-group">
+          <label for="quantity">Estimated Quantity</label>
+          <div class="select-wrap">
+            <select id="quantity" name="quantity">
+              <option value="" disabled selected>Select range…</option>
+              <option>Under 1kg</option>
+              <option>1–5kg</option>
+              <option>5–25kg</option>
+              <option>25–100kg</option>
+              <option>100kg+</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="email">Email Address <span class="req">*</span></label>
+          <input type="email" id="email" name="email" required autocomplete="email" placeholder="jane@example.com" />
+          <span class="field-error" id="email-err">Please enter a valid email.</span>
+        </div>
+      </div>
+
+      <!-- Phone -->
+      <div class="form-group">
+        <label for="phone">Phone Number <span class="req">*</span></label>
+        <input type="tel" id="phone" name="phone" required autocomplete="tel" placeholder="+1 (416) 555-0123" />
+        <span class="field-error" id="phone-err">Please enter your phone number.</span>
+      </div>
+
+      <!-- Submit -->
+      <div class="form-footer">
+        <button type="submit" class="submit-btn" id="submitBtn">
+          Request My Wholesale Quote →
+        </button>
+        <p class="submit-note">
+          <strong>We will call you within 1 hour during business hours</strong><br>
+          Mon–Fri 9am–5pm EST
+        </p>
+      </div>
+    </form>
+
+    <!-- Thank you (hidden until submission) -->
+    <div class="thankyou" id="thankyou">
+      <div class="thankyou__icon">✅</div>
+      <div class="thankyou__heading">Request Received!</div>
+      <p class="thankyou__body">
+        Thank you — we'll call you within the hour.<br>
+        Check your email for confirmation.
+      </p>
+    </div>
+
+  </div>
+</section>
+
+<footer class="site-footer">
+  &copy; 2025 Premier Herbal Inc. &nbsp;·&nbsp;
+  <a href="mailto:Premierherbal99@gmail.com">Premierherbal99@gmail.com</a>
+  &nbsp;·&nbsp; premierherbal.ca
+</footer>
+
+<script>
+  const form     = document.getElementById('wholesaleForm');
+  const thankyou = document.getElementById('thankyou');
+  const submitBtn = document.getElementById('submitBtn');
+
+  function validate() {
+    let ok = true;
+
+    const fields = [
+      { id: 'full-name',      errId: 'full-name-err',      check: v => v.trim().length > 0,                       msg: 'Please enter your name.'          },
+      { id: 'business-name',  errId: 'business-name-err',  check: v => v.trim().length > 0,                       msg: 'Please enter your business name.' },
+      { id: 'email',          errId: 'email-err',           check: v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v),     msg: 'Please enter a valid email.'      },
+      { id: 'phone',          errId: 'phone-err',           check: v => v.trim().length >= 7,                      msg: 'Please enter your phone number.'  },
+    ];
+
+    fields.forEach(({ id, errId, check, msg }) => {
+      const el  = document.getElementById(id);
+      const err = document.getElementById(errId);
+      if (!check(el.value)) {
+        el.classList.add('error');
+        err.textContent = msg;
+        err.classList.add('visible');
+        ok = false;
+      } else {
+        el.classList.remove('error');
+        err.classList.remove('visible');
+      }
+    });
+
+    return ok;
+  }
+
+  // Clear errors on input
+  ['full-name','business-name','email','phone'].forEach(id => {
+    document.getElementById(id).addEventListener('input', () => {
+      const el  = document.getElementById(id);
+      const err = document.getElementById(id + '-err');
+      el.classList.remove('error');
+      if (err) err.classList.remove('visible');
+    });
+  });
+
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+    if (!validate()) return;
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Sending…';
+
+    try {
+      const data = new FormData(form);
+      await fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams(data).toString(),
+      });
+    } catch (_) {
+      // fail silently — still show thank-you (Netlify may have received it)
+    }
+
+    form.style.display = 'none';
+    thankyou.style.display = 'flex';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+</script>
+
+</body>
+</html>
